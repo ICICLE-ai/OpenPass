@@ -158,5 +158,3 @@ def fullMission():
         mission.writef(drone.sendCommand(f'p1=sendtotapis&p2=0&p3={parameters[1]}&p4={parameters[2]}&p5={parameters[3]}'))
 
 mission.run(fullMission)
-
-# This is a test file
