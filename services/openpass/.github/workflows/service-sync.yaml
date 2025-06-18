@@ -1,50 +1,49 @@
-name: Sync Service Folder to Main
+name: Sync to Main
 
 on:
   push:
     branches:
-      - service/**
+      - 'services/**'
 
 jobs:
-  sync-to-main:
+  sync:
+    if: github.ref_name != 'main'
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout source branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref_name }}
+        path: source
 
-      - name: Extract service name from branch
-        id: extract
-        run: echo "SERVICE_NAME=${GITHUB_REF#refs/heads/service/}" >> $GITHUB_ENV
+    - uses: actions/checkout@v4
+      with:
+        ref: main
+        path: main
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout main branch
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          path: main_branch
-
-      - name: Copy updated service folder to main branch
-        run: |
-          SOURCE_PATH=services/${{ env.SERVICE_NAME }}/
-          DEST_PATH=main_branch/services/${{ env.SERVICE_NAME }}/
-
-          if [ -d "$SOURCE_PATH" ]; then
-            echo "✅ Found source folder: $SOURCE_PATH"
-            rm -rf "$DEST_PATH"
-            mkdir -p "$DEST_PATH"
-            cp -r "$SOURCE_PATH"/. "$DEST_PATH"
-          else
-            echo "❌ Folder $SOURCE_PATH not found in branch."
-            exit 1
-          fi
-
-      - name: Commit and push to main
-        run: |
-          cd main_branch
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add services/${{ env.SERVICE_NAME }}
-          git commit -m "Sync ${{ github.ref_name }} → main/services/${{ env.SERVICE_NAME }}" || echo "No changes to commit"
+    - name: Sync to main
+      run: |
+        SERVICE_PATH="${{ github.ref_name }}"
+        
+        cd main
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        
+        # Remove old service directory
+        rm -rf "$SERVICE_PATH"
+        
+        # Copy files from source to service directory
+        mkdir -p "$SERVICE_PATH"
+        cp -r ../source/* "$SERVICE_PATH/" 2>/dev/null || true
+        cp -r ../source/.[^.]* "$SERVICE_PATH/" 2>/dev/null || true
+        
+        # Remove .git directory if copied
+        rm -rf "$SERVICE_PATH/.git"
+        
+        git add .
+        
+        if ! git diff --staged --quiet; then
+          git commit -m "Update $SERVICE_PATH"
           git push origin main
+        fi
