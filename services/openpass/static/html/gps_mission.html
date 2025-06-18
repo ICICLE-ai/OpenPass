@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPS Coordinate Mission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .form-container {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .note {
+            background-color: #fef9e7;
+            border-left: 4px solid #f1c40f;
+            padding: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fly Drone to GPS Coordinate</h1>
+    
+    <div class="note">
+        <p><strong>Note:</strong> Make sure the coordinates are within the drone's flying range and comply with local regulations.</p>
+    </div>
+    
+    <div class="form-container">
+        <form action="/cgi-bin/flyGpsCoordinateMission.py" method="get">
+            <input type="hidden" name="code" value="test_code">
+            <input type="hidden" name="state" value="test_state">
+            
+            <label for="latitude">Latitude:</label>
+            <input type="number" id="latitude" name="latitude" step="0.0000001" required placeholder="e.g., 40.0089852740562">
+            
+            <label for="longitude">Longitude:</label>
+            <input type="number" id="longitude" name="longitude" step="0.0000001" required placeholder="e.g., -83.01683790675908">
+            
+            <label for="altitude">Altitude (meters):</label>
+            <input type="number" id="altitude" name="altitude" step="0.1" value="5" placeholder="Default: 5">
+            
+            <label for="heading">Heading (degrees):</label>
+            <input type="number" id="heading" name="heading" step="1" value="0" min="0" max="359" placeholder="Default: 0">
+            
+            <button type="submit">Start Mission</button>
+        </form>
+    </div>
+    
+    <div>
+        <h2>Instructions</h2>
+        <ol>
+            <li>Enter the GPS coordinates (latitude and longitude) of the destination.</li>
+            <li>Specify the desired altitude in meters (default is 5 meters).</li>
+            <li>Set the heading in degrees (0-359, default is 0 degrees).</li>
+            <li>Click "Start Mission" to begin the flight.</li>
+            <li>You will be directed to a page showing the mission progress.</li>
+            <li>After completion, you can download captured images as a zip file.</li>
+        </ol>
+    </div>
+</body>
+</html> 

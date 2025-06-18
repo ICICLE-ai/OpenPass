@@ -1,0 +1,7 @@
+/home/icicle/icicleEdge/boundarymapcode/userfiles/user-postcoords-refined.txt
+0.02
+20
+/home/icicle/icicleEdge/boundarymapcode/userfiles/user-waypoints
+n
+n
+

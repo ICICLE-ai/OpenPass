@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Softwarepilot Service: Available Commands</title>
+
+  
+</head><body>
+
+<!-- 
+<form action="/cgi-bin/sendBasicCmd.py" method="get"><input value="set" name="p1" id="set" type="submit"></form> 
+
+<br>
+-->
+
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+  <input type="hidden" id="params" name="p2" value="3" />
+  <label for="p3">Drone type:</label>
+  <select id="drone_type" name="p3">
+    <option value="parrot_anafi">Parrot Anafi</option>
+  </select><br>
+  <label for="p4">Connection type:</label>
+  <select id="connection_type" name="p4">
+    <option value="1">Controller</option>
+    <option value="0">Physical</option>
+  </select><br>
+  <input type="hidden" id="download_dir" name="p5" value="None">
+  <input type="submit" value="set" name="p1" id="set">
+</form> 
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="connect" name="p1" id="connect" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="disconnect" name="p1" id="connect" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="takeoff" name="p1" id="takeoff" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="land" name="p1" id="land" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+  <input type="hidden" id="params" name="p2" value="5" />
+  <label for="p3">X:</label>
+  <input type="text" id="x" name="p3"><br>
+  <label for="p4">Y:</label>
+  <input type="text" id="y" name="p4"><br>
+  <label for="p5">Z:</label>
+  <input type="text" id="z" name="p5"><br>
+  <label for="p6">Angle:</label>
+  <input type="text" id="angle" name="p6"><br>
+  <label for="p7">Wait:</label>
+  <select id="wait" name="p7">
+    <option value="True">True</option>
+    <option value="False">False</option>
+  </select><br>
+  <input type="submit" value="move-distance" name="p1" id="move-distance">
+</form> 
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+  <input type="hidden" id="params" name="p2" value="5" />
+  <label for="p3">Latitude:</label>
+  <input type="text" id="lat" name="p3"><br>
+  <label for="p4">Longitude:</label>
+  <input type="text" id="lon" name="p4"><br>
+  <label for="p5">Altitude:</label>
+  <input type="text" id="alt" name="p5"><br>
+  <label for="p6">Orientation mode:</label>
+  <input type="text" id="orientation_mode" name="p6"><br>
+  <label for="p7">Heading:</label>
+  <input type="text" id="heading" name="p7"><br>
+  <label for="p8">Wait:</label>
+  <select id="wait" name="p8">
+    <option value="True">True</option>
+    <option value="False">False</option>
+  </select><br>
+  <input type="submit" value="move-waypoint" name="p1" id="move-waypoint">
+</form> 
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="setup-photo" name="p1" id="setup-photo" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="take-photo" name="p1" id="take-photo" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="setup-recording" name="p1" id="setup-recording" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="take-recording-start" name="p1" id="take-recording-start" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="take-recording-stop" name="p1" id="take-recording-stop" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="setup-streaming" name="p1" id="setup-streaming" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="take-streaming-start" name="p1" id="take-streaming-start" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendBasicCmd.py" method="get">
+<input value="take-streaming-stop" name="p1" id="take-streaming-stop" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+
+<br>
+
+<hr>
+<form action="/cgi-bin/sendDownloadCmd.py" method="get">
+<input value="download" name="p1" id="download" type="submit">
+<input type="hidden" id="params" name="p2" value="0">
+</form>
+<br>
+<!--
+<hr>
+<form action="/cgi-bin/sendDownloadCmd.py" method="get"><input value="download" name="cmd" id="download" type="submit"></form>
+<br>
+-->
+
+<hr>
+</body></html>

@@ -1,0 +1,6 @@
+__ICICLE__MODELDESCRIPTION=<b>Soybean Defoliation Model (CompAg-22).</b> This is the original model published to detect severe defoliation using UAV.  It is a neural network with a custom architecture (DefoNet).
+__ICICLE__MODELNAME=Soybean.Defoliation.ZhangCompAg.OriginalModel 
+__ICICLE__MODELURL=https://buckeyemailosu-my.sharepoint.com/:u:/g/personal/stewart_962_osu_edu/EStbzO8uZf5MpWbh_SpBuoIBSPqIMyTPZghVjTN8_zd8Ow?e=rPgcwS%26download=1
+__ICICLE__MODELEXEC=
+__ICICLE__MODELTESTINPUT=https://buckeyemailosu-my.sharepoint.com/:i:/g/personal/stewart_962_osu_edu/Ec3xUu-nLBNCspFIwKwPNb8B9A29xNBQr7vl8aPqs7PHHg?e=Hw3Lvz%26download=1
+__ICICLE__ENDRECORD=END

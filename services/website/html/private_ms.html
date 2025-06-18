@@ -1,0 +1,105 @@
+
+<!-- You MUST BE SIGNED IN TO GET THE FOLLOWING
+  CONTENT -->
+<div id="about" class="aboutContainer container-fluid">
+    <div class="AboutInfo">
+      <div class="row">
+        <div class="col-12 offset-1">
+	  <div class="AboutInfoTitle">
+	 Digital Agriculture Microservices<br>
+	  </div>
+	  <div class="col-6 w-50" >
+	    <p >All services provided here are
+	      available via the Apache 2 License.
+	      The creators disclaim all warranties
+	    even for fitness of purpose. We also
+	      provide no guarantees on data privacy
+	      including data loss to cyber attack
+	      and/or negligence.  Use at your own risk.</p>
+	  </div>
+        </div>
+      </div>
+    </div>
+    <h6 class="bg-light p-2 border-top border-bottom"></h6>
+
+
+    
+    <ul class="list-group list-group-light mb-4">
+
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+	<div class="d-flex align-items-center">
+	  <div class="ms-3">
+            <p class="fw-bold mb-1 w-50">
+	      <a href = "/cgi-bin/callms.py?ms=i54292openpass&port=54292&path=/&page=index.html">Open Pass (Beta)</a><br>	      
+	    </p>
+            <p class="text-muted mb-0 w-50">
+The Open Pass framework for effortlessly deploying agricultural scouting missions from a smartphone.  Be sure to login before using.
+	    </p>
+	  </div>
+	</div>
+      </li>      
+      
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+	<div class="d-flex align-items-center">
+	  <div class="ms-3">
+            <p class="fw-bold mb-1 w-50">
+	      <a href = "/cgi-bin/callms.py?ms=i29370activecubesim&port=29370&path=/&page=landingpgnew.html">UAV Simulator</a><br>	      
+	    </p>
+            <p class="text-muted mb-0 w-50">
+This microservice simulates the power, energy and edge computing resource consumption for unmanned aerial vehicles.  At this stage, we focus on lawnmower missions in a prescribed field<br>.
+	    </p>
+	  </div>
+	</div>
+      </li>
+
+      
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+	<div class="d-flex align-items-center">
+	  <div class="ms-3">
+            <p class="fw-bold mb-1 w-50">
+<a href = "/cgi-bin/callms.py?ms=i44445treeinterpretability&port=44445&path=/cgi-bin/&page=uploadFile.py">Scouting Map Interpretability (Upload)</a><br>
+	    </p>
+            <p class="text-muted mb-0 w-50">
+This project loads an html page with instructions on how to upload a dataset.
+The dataset must be in the format of a zip file containing a directory with all images in the dataset and two text files listing all the images and the predictions made by a previous model. The page then shows an upload option.<br>
+<br>
+After uploading the file, the page displays a message indicating the file was uploaded and unzipped and a link to run interpretation<br>
+	    </p>
+	  </div>
+	</div>
+      </li>
+
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+	<div class="d-flex align-items-center">
+	  <div class="ms-3">
+            <p class="fw-bold mb-1 w-50">
+<a href ="/cgi-bin/callms.py?ms=i44445treeinterpretability&port=44445&path=/cgi-bin/&page=evaluateFeatures.py">Scouting Map Interpretability</a><br>
+	    </p>
+            <p class="text-muted mb-0 w-50">
+This script follows the experiments outlined in Romero-Gainza E, Stewart C. AI-Driven Validation of Digital Agriculture Models. Sensors. 2023; 23(3):1187. https://doi.org/10.3390/s23031187
+This script uses the files uploaded by uploadFile.py (i.e. a dataset of images and their classifications by a previous model) and one extra parameter: numpixels=n, where n must be a positive integer smaller or equal than the number of pixels in any dimension of the input images.
+For example, if images are 108x108 then 108 is the maximum value of n.
+This script outputs:
+Two lines indicating the number of images in the training and test sets. These lines are used as sanity check.
+One line, showing the dimensions of the final test set after reading the images. i.e. with k images, and n as numpixels, it should output (k, n*n).
+Then, the next line will indicate whether it was possible to use every feature available to the model using the dataset.
+If it is possible, the output will say "success". Otherwise, the model was not able to use all features and the conclusion can be that the test set is not representative enough.
+The next two output lines read
+We expect to need samples: (some real value)
+We expect to need features: (some real value)
+These two lines, given how our decision tree was trained, indicate how many images and features were expected to be seen until all features in the model were used at least once.
+The next two lines show the actual measured value for number of images and features.
+The next line shows the number of total images that were obtained using random sampling. This is a superset of previous images seen. It also includes images that did not contribute any new feature.
+Finally, the last line shows the percent reduction of samples needed of this approach with respect to random sampling.
+	    </p>
+	  </div>
+	</div>
+      </li>
+      
+    
+
+
+    </ul>
+
+
+</div>

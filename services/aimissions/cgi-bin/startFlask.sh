@@ -1,0 +1,1 @@
+python3 /opt/bitnami/apache/cgi-bin/YoloFlask.py

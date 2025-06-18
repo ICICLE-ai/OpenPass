@@ -1,0 +1,172 @@
+<form>
+	<fieldset class="form-group">
+		<div class="row">
+			<legend class="col-form-label col-sm-2 pt-0">Radios</legend>
+			<div class="col-sm-10">
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="p1" id="p1a" value="takeoff~0" checked>
+					<label class="form-check-label" for="p1">
+					Takeoff
+					</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="p1" id="p1b" value="land~0" checked>
+					<label class="form-check-label" for="p1">
+					Land
+					</label>
+				</div>
+				
+				<div class="form-check">
+					<input class="form-check-input" type="radio" onchange="moveDistance();" name="p1" id="p1c" value="move-distance~5">
+					<label class="form-check-label" for="p1">
+					Move Distance
+					</label>
+				</div>
+				
+				<div class="form-check">
+					<input class="form-check-input" type="radio" onchange="moveWaypoint();" name="p1" id="p1d" value="move-waypoint~6">
+					<label class="form-check-label" for="p1">
+					Move Waypoint
+					</label>
+				</div>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="p1" id="p1e" value="take-photo~0" checked>
+					<label class="form-check-label" for="p1">
+					Take Photo
+					</label>
+				</div>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="p1" id="p1f" value="setup-photo~0" checked>
+					<label class="form-check-label" for="p1">
+					Setup Photo
+					</label>
+				</div>
+
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="p1" id="p1g" value="crop-model" checked>
+					<label class="form-check-label" for="p1">
+					Crop model
+					</label>
+				</div>		
+
+			</div>
+		</div>
+		
+		<div id="content"></div>
+		
+	</fieldset>
+
+	<fieldset class="form-group">
+	<div class="row">
+		<legend class="col-form-label col-sm-2 pt-0">Write</legend>
+		<div class="col-sm-10">
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="p2" id="p2a" value="0" checked>
+				<label class="form-check-label" for="p2">
+				Overwrite
+				</label>
+			</div>
+
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="p2" id="p2b" value="1" checked>
+				<label class="form-check-label" for="p2">
+				Append
+				</label>
+			</div>
+			</div>
+	</div>
+	</fieldset>
+	
+	<input type="hidden" name="ms" id="ms" value="i54292openpass">
+	<input type="hidden" name="port" id="port" value="54292">
+	<input type="hidden" name="path" id="path" value="/cgi-bin/">
+	<input type="hidden" name="page" id="page" value="setActions.py">  
+	<div class="form-group row">
+		<div class="col-sm-10">
+			<button type="submit" class="btn btn-primary" onclick="submitMove();" action="/cgi-bin/setActions.py">Append</button>
+		</div>
+	</div>
+	
+	<script>
+		let content = document.querySelector('#content');
+
+		function moveDistance() {
+			content.innerHTML = `
+			<label for="x" id="test">X:</label>
+			<input type="text" id="x" name="x">
+			<label for="y">Y:</label>
+			<input type="text+" id="y" name="y">
+			<label for="z">Z:</label>
+			<input type="text" id="z" name="z">
+			<label for="angle">Angle:</label>
+			<input type="text" id="angle" name="angle">
+			<label for="wait">Wait:</label>
+			<select id="wait" name="wait">
+			<option value="True">True</option>
+			<option value="False">False</option>
+			</select><br>
+			`;			
+		}
+		
+		function moveWaypoint() {
+			content.innerHTML = `
+			<label for="lat">Latitude:</label>
+			<input type="text" id="lat" name="lat">
+			<label for="lon">Longitude:</label>
+			<input type="text" id="lon" name="lon">
+			<label for="alt">Altitude:</label>
+			<input type="text" id="alt" name="alt">
+			<label for="orientation_mode">Orientation mode:</label>
+			<input type="text" id="orientation_mode" name="orientation_mode">
+			<label for="heading">Heading:</label>
+			<input type="text" id="heading" name="heading">
+			<label for="wait">Wait:</label>
+			<select id="wait" name="wait">
+			<option value="True">True</option>
+			<option value="False">False</option>
+			</select><br>
+			`;
+		}
+		
+		function submitMove() {
+			var distcheck = document.getElementById("x");
+			var waycheck = document.getElementById("lat");
+			
+			//window.alert(distcheck.value);
+			//window.alert(waycheck.value);
+			
+			if (distcheck){
+				//window.alert("if");
+				var x =  document.getElementById("x").value;
+				var y =  document.getElementById("y").value;
+				var z =  document.getElementById("z").value;
+				var angle =  document.getElementById("angle").value;
+				var wait =  document.getElementById("wait").value;
+				//window.alert("move-distance~5~"+x+"~"+y+"~"+z+"~"+angle+"~"+wait);
+				document.getElementById("p1c").value = "move-distance~5~"+x+"~"+y+"~"+z+"~"+angle+"~"+wait;
+				//window.alert(document.getElementById("p1c").value);
+			}
+			else if (waycheck){
+				//window.alert("elif");
+				var lat =  document.getElementById("lat").value;
+				var lon =  document.getElementById("lon").value;
+				var alt =  document.getElementById("alt").value;
+				var orientation_mode =  document.getElementById("orientation_mode").value;
+				var heading =  document.getElementById("heading").value;
+				var wait =  document.getElementById("wait").value;
+				
+				document.getElementById("p1d").value = "move-waypoint~6~"+lat+"~"+lon+"~"+alt+"~"+orientation_mode+"~"+heading+"~"+wait;
+			}
+			//window.alert("else")
+		}
+
+
+	</script>
+
+
+</form>
+
+
+

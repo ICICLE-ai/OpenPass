@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DAB Website</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      /* ---- Start: Mission-Container ----*/
+      .mission-container.row{
+        margin: 0 -5px;
+        background-color:rgba(0, 0, 0, 0.65);
+      }
+      .mission-container.column { 
+        float: left;
+        width: 25%;
+        padding: 10px 10px;
+      }
+      @media screen and (max-width: 600px){
+        .mission-container.column {
+          width: 100%;
+          display: block;
+          margin-bottom: 20px;
+        }
+      }
+      .mission-container{
+        .card{
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+          padding: 16px;
+          text-align: center;
+          background-color: #e9e9e9;
+        }
+        .card:hover {
+          box-shadow: 0 0 25px 0 rgba(247, 255, 133, 0.65);
+          background-color: #f1f1f1;
+        }
+      }
+      /* ---- End: Mission-Container ----*/
+
+      /* ---- Start: Mission-Popup ----*/
+      .mission-popup.card { 
+        position: fixed;
+        width: 60%;
+        height: 60%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+        border: 3px solid #3f3f3f;
+        background-color: #f1f1f1;
+        display: block;
+        
+        .row {
+          margin: 0 -5px;  
+        }
+        .column {
+          float: left;  
+        }
+        .column.small {
+          width: 35%;
+        }
+        .column.medium {
+          width: 50%;
+        }
+        .column.large {
+          width: 65%
+        }
+        @media screen and (max-width: 600px){
+          .column {
+            width: 100%;
+            display: block;
+          }
+        } 
+
+        .description {
+          position: absolute;
+          margin-top: 2%;
+          padding-left: 10px;
+          padding-right: 10px;
+          padding-top: 10px;
+          height: 60%;
+          width: 62%;
+          left: 5%;
+          overflow-y: scroll;
+          background-color: #e4e4e4;
+          border: 1px solid #3f3f3f; 
+        }
+
+        .tags {
+          position: absolute;
+          max-height: 50%;
+          max-width: 25%;
+          top: 15%;
+          left: 70%;
+          word-wrap: break-word;
+        }
+
+        .img {
+          position: absolute;
+          max-height: 50%;
+          max-width: 25%;
+          top: 5%;
+          left: 5%;
+        }
+
+        .close {
+          color:#000000;
+          cursor: pointer;
+          position: absolute;
+          top: 0%;
+          right: 0%;
+          width: 50px;
+          height: 50px;
+          padding: 12px 16px;
+        }
+
+        .close:hover {background: #bbb;}
+
+        .open {
+          background-color: #04AA6D;
+          border: none;
+          color: white;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          position: absolute;
+          bottom: 5%;
+          right: 5%;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+
+        .open:hover {background: #a0a0a0;}
+
+        .disabled {
+          background-color: #aa0404;
+          border: none;
+          color: white;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          position: absolute;
+          bottom: 5%;
+          right: 5%;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+      }
+
+      .mission-popup.background {
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      /* ---- End: Mission-Popup ----*/
+
+
+      a.normal {
+        text-decoration: none; 
+        color: inherit;
+      }
+
+      .inline-block-child {
+        display: inline-block;
+      }
+
+      @media screen and (max-width: 600px) {
+        .search-container {
+          float: none;
+        }
+        input[type=text], .search-container button {
+          float: none;
+          display: block;
+          text-align: left;
+          width: 100%;
+          margin: 0;
+          padding: 14px;
+        }
+        input[type=text] {
+          border: 1px solid #ccc;  
+        }
+      }
+      
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse" style="position: fixed; width: 100%;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand">ICICLE OpenPass</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <!-- Enter left aligned buttons -->
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- !!!! Remove to enable webpage Links !!!! -->
+          <!--
+          <li><a href="http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=30080website&port=30080&path=/&page=index.html">Home</a></li>
+          <li class="active"><a href="http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=i54292openpass&port=54292&path=/&page=index.html">Missions</a></li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">About Us <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=30080website&port=30080&path=/&page=index.html">What We Do?</a></li>
+              <li><a href="http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=30080website&port=30080&path=/&page=index.html">Who We Are?</a></li>
+              <li><a href="http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=30080website&port=30080&path=/&page=index.html">Contact Us</a></li>
+            </ul>
+          </li>
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        -->
+        </ul>
+      </div>
+    </nav>
+      
+    <div class="container" style="padding-top:50px;">
+      <h1 class="inline-block-child"><b>Missions</b></h1>
+      <h4 class="inline-block-child" style="padding-left: 10px;">Select which mission you wish to run</h4>
+    </div>
+
+    <div class="search-container" style="padding: 0 20px 20px 75px;">
+      <input type="text" placeholder="Search.." id="search">
+      <button type="submit" onclick="searchMissions();"><i class="fa fa-search"></i></button>
+    </div>
+
+    <!--Create the Popup Container-->
+    <div id="popup" style="display: none;">
+      <div class="mission-popup background" onclick="off()"></div>
+      <div id="card-popup"></div>
+    </div>
+
+    <!--Create the Card Container-->
+    <div id="card_container"></div>
+
+    <div class="container" style="padding-top: 50px;"></div>
+
+    <div class="container" style="width: 100%; height:50%; background-color: rgba(0, 0, 0, 0.877);">
+      <div style="margin-top: 20px; padding-bottom: 60px;">
+        <div style="float: left; margin-left: 5%; width: 30%">
+          <h2 style="color: #f1f1f1;">Contact Us:</h2>
+        </div>
+        <div style="float: left; width: 30%;">
+          <p style="color: #f1f1f1;">Dr. Christopher Stewart</p>
+          <p style="color: #f1f1f1;">Email: stewart.962@osu.edu</p>
+          <p style="color: #f1f1f1;">Phone: (614) 292-7325</p>
+        </div>
+        <div style="float: left; width: 30%;">
+          <p style="color: #f1f1f1;">Kevyn Angueira Irizarry</p>
+          <p style="color: #f1f1f1;">Email: angueirairizarry.1@osu.edu</p>
+          <p style="color: #f1f1f1;">Phone: (939) 274-1747</p>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
+
+<script>
+
+  let mainLinks = {
+      "Home":"http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=30080website&port=30080&path=/&page=index.html",
+      "Mission":"http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=i54292openpass&port=54292&path=/&page=index.html",
+      "About":"http://10.43.195.204:30080/cgi-bin/callms.py?state=user&code=user&ms=30080website&port=30080&path=/&page=index.html"
+  };
+
+  function getMainLink(linkName){
+    console.log(mainLinks[linkName]);
+    return(mainLinks[linkName]);
+  }
+
+  const missions = [
+  {
+      name: "STOP Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=stop",
+      
+      description:"Quick Test! Start a video stream",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will start a video stream and record the next 10 seconds.",
+    },
+    {
+      name: "Vizualize GPS Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyVizualize&p3=0.02&p4=20&p5=50",
+
+      description:"Use GPS to survey a 50ft square",
+      tags:["prebuilt", "waypoint", "lawnmower"],
+      
+      long_description:
+      "The drone will use GPS to survey a 20ft square area using an automated lawnmower pattern. The drone will take and display an image at each stop. \
+      <br/><br/><b>** Starting at the bottom left corner **</b> \
+      <br/><b>** Must be flown outside **</b>",
+    },
+    {
+      name: "Gimbal Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyGimbal",
+      
+      description:"Quick Test! Start a video stream",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will start a video stream and record the next 10 seconds.",
+    },
+    {
+      name: "Test Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyStream",
+      
+      description:"Quick Test! Start a video stream",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will start a video stream and record the next 10 seconds.",
+    },
+    {
+      name: "Test Flight Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyTest",
+      
+      description:"Quick Test! Takeoff and Land.",
+      tags:["test", "prebuilt", "takeoff"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will takeoff and land in the same spot \
+      <br/><br/> Actions: \
+      <br/>  1) Takeoff \
+      <br/>  2) Land",
+    },
+    {
+      name: "Apple Detection Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyYolo&p2=Yolo&p3=apple_best.pt",
+      
+      description:"Detect apples using Yolov5!",
+      tags:["prebuilt", "model", "yolo", "yolov5"],
+      
+      long_description:
+      "Detect apples in your stream using Yolov5. The drone will capture an image and run inference using Yolov5. The drone an image drawing a bounding box along with confidence levels for every object detected in the image.",
+    },
+    {
+      name: "Corn Detection Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyYolo&p2=Yolo&p3=corn_best.pt",
+      
+      description:"Detect corn using Yolov5!",
+      tags:["prebuilt", "model", "yolo", "yolov5"],
+      
+      long_description:
+      "Detect corn in your stream using Yolov5. The drone will capture an image and run inference using Yolov5. The drone an image drawing a bounding box along with confidence levels for every object detected in the image.",
+    },
+    {
+      name: "Branch Detection Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyYolo&p2=Yolo&p3=branch_best.pt",
+      
+      description:"Detect branches using Yolov5!",
+      tags:["prebuilt", "model", "yolo", "yolov5"],
+      
+      long_description:
+      "Detect branches in your stream using Yolov5. The drone will capture an image and run inference using Yolov5. The drone an image drawing a bounding box along with confidence levels for every object detected in the image.",
+    },
+    {
+      name: "Leaf Detection Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyYolo&p2=Yolo&p3=leaf_best.pt",
+      
+      description:"Detect leaves using Yolov5!",
+      tags:["prebuilt", "model", "yolo", "yolov5"],
+      
+      long_description:
+      "Detect leaves in your stream using Yolov5. The drone will capture an image and run inference using Yolov5. The drone an image drawing a bounding box along with confidence levels for every object detected in the image.",
+    },
+    {
+      name: "Yolo Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyYolo&p2=Yolo&p3=yolov5n.pt",
+      
+      description:"Detect objects using Yolov5!",
+      tags:["prebuilt", "model", "yolo", "yolov5"],
+      
+      long_description:
+      "Detect objects in your stream using Yolov5. The drone will capture an image and run inference using Yolov5. The drone an image drawing a bounding box along with confidence levels for every object detected in the image.",
+    },
+    {
+      name: "Forward Mission (1m)",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyForward&p3=1",
+      
+      description:"Takeoff, Fly 1m Forward, and Land",
+      tags:["test", "prebuilt", "forward"],
+      
+      long_description:
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will takeoff, fly 1m forward, and land. \
+      <br/><br/> Actions: \
+      <br/>  1) Takeoff \
+      <br/>  2) Fly 1m forward \
+      <br/>  3) Land",
+    },
+    {
+      name: "Forward Mission (5m)",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyForward&p3=5",
+      
+      description:"Takeoff, Fly 5m Forward, and Land",
+      tags:["test", "prebuilt", "forward"],
+      
+      long_description:
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will takeoff, fly 5m forward, and land. \
+      <br/><br/> Actions: \
+      <br/>  1) Takeoff \
+      <br/>  2) Fly 5m forward \
+      <br/>  3) Land",
+    },
+    {
+      name: "Square Mission (1m)",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flySquare&p3=1",
+      
+      description:"Fly in a 1m square",
+      tags:["test", "prebuilt", "square"], 
+      
+      long_description:
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will fly in a 1m square. \
+      <br/><br/> Actions: \
+      <br/>  1) Takeoff \
+      <br/>  2) Fly in a 1m square \
+      <br/>  3) Land \
+      <br/><br/><b>** Starting at the bottom left corner **</b>",
+    },
+    {
+      name: "Square Mission (5m)",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flySquare&p3=5",
+      
+      description:"Fly in a 5m square",
+      tags:["test", "prebuilt", "square"], 
+      
+      long_description:
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will fly in a 5m square. \
+      <br/><br/> Actions: \
+      <br/>  1) Takeoff \
+      <br/>  2) Fly in a 5m square \
+      <br/>  3) Land \
+      <br/><br/><b>** Starting at the bottom left corner **</b>",
+    },
+    {
+      name: "Lawnmower Mission (1m)",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyLawnmower&p3=1&p4=2",
+      
+      description:"Survey a 1m square",
+      tags:["test", "prebuilt", "lawnmower"],
+      
+      long_description:
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will survey a 1m area using an automated lawnmower pattern. The drone will take and display an image at each stop. \
+      <br/><br/><b>** Starting at the bottom left corner **</b>" 
+    },
+    {
+      name: "Lawnmower Mission (5m)",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyLawnmower&p3=5&p4=5",
+      
+      description:"Survey a 5m square",
+      tags:["test", "prebuilt", "lawnmower"],
+      
+      long_description:
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>The drone will survey a 5m area using an automated lawnmower pattern. The drone will take and display an image at each stop. \
+      <br/><br/><b>** Starting at the bottom left corner **</b>"
+    },
+    {
+      name: "GPS Square Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyWaypointSquare&p3=20",
+    
+      description:"Use GPS to fly in a 20ft square",
+      tags:["prebuilt", "waypoint", "square"],
+      
+      long_description:
+      "The drone will use GPS to fly in a 20ft square.\
+      <br/><br/><b>** Starting at the bottom left corner **</b> \
+      <br/><b>** Must be flown outside **</b>",
+    },
+    {
+      name: "GPS Lawnmower Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyWaypointLawnmower&p3=0.02&p4=20&p5=10",
+
+      description:"Use GPS to survey a 20ft square",
+      tags:["prebuilt", "waypoint", "lawnmower"],
+      
+      long_description:
+      "The drone will use GPS to survey a 20ft square area using an automated lawnmower pattern. The drone will take and display an image at each stop. \
+      <br/><br/><b>** Starting at the bottom left corner **</b> \
+      <br/><b>** Must be flown outside **</b>",
+    },
+    {
+      name: "Custom Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"mission.py&p1=demomission",
+      
+      description:"Program your own custom mission!",
+      tags:["custom"],
+      
+      long_description:
+      "Program your own custom mission! Set your drone commands on our interactive platform and watch the drone fly.\
+      <br/><br/> Setup: \
+      <br/>  1) Enter your commands \
+      ",
+    },
+    {
+      name: "Custom GPS Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"mission.py&p1=waypointmission",
+      description:"Set your coordinates and survey!",
+      tags:["custom", "waypoint", "lawnmower"],
+      
+      long_description:"Set your field GPS boundaries with our interactive map and send the drone to survey the area. The drone will trace a lawnmower pattern over the selected field and return aerial images of the entire field. \
+      <br/><br/> Setup: \
+      <br/>  1) Use the interactive map to setup your field GPS boundaries. \
+      <br/><br/><b>** Must be flown outside **</b>",
+    },
+    {
+      name: "Digital Agriculture Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyGPS&p3=0.02&p4=20&p5=10",
+      
+      description:"Enable the digital agriculture mode and run this mission",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>Test test tes",
+    },
+    {
+      name: "Smartfield Wildwing Start Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flySmartfieldsStart",
+      
+      description:"This mission will sned drone to requested location to track the animals in wild",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>Test test tes",
+    },
+    {
+      name: "Smartfield Wildwing End Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flySmartfieldsEnd",
+      
+      description:"This mission will get drone to home location after tracking the animals in wild",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>Test test tes",
+    },
+    {
+      name: "Get GPS Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyGetGPS",
+      
+      description:"This mission will get you the drones current location",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>Test test tes",
+    },
+    {
+      name: "Orthomosaic Mission",
+      enabled: true,
+      
+      img: "img_avatar2.png",
+      link:"runMission.py&p1=flyTestingOne",
+      
+      description:"This mission will cover an 1 Acre of Land. The mission will automatically identify the mission path according to which a proper orthomosaic can be generated.",
+      tags:["test", "prebuilt", "stream"],
+      
+      long_description: 
+      "Test our systems with a quick pre-built mission! \
+      <br/><br/>Test test tes",
+    }
+  ];
+  
+  // <input id='tapis-dir' type='text' placeholder='Tapis Directory'/><br/><input id='tapis-token' type='text' placeholder='Tapis Token'/><br/><input id='fly-mode' type='text' placeholder='FlyMode: 0(False) 1(True)'/>
+  function createMissions(){
+    let content = document.querySelector('#card_container');
+    let card_container = `<div class="mission-container row">`;
+
+    for (let m of missions){
+      card_container = addMission(card_container, m);
+    }
+
+    card_container += `</div>`;
+    content.innerHTML = card_container;
+  }
+
+  function searchMissions(){
+    var s = document.getElementById("search").value;
+    console.log(`Search: ${s}`);
+
+    let content = document.querySelector('#card_container');
+    let card_container = `<div class="mission-container row">`;
+
+    for (let m of missions){
+      if (filterMissions(m, s)){
+        card_container = addMission(card_container, m);
+      }
+    }
+    card_container += `</div>`;
+    content.innerHTML = card_container;
+  }
+
+  function addMission(card_container, mission){
+    let {name, enabled, img, link, description, tags, long_description} = mission;
+    
+    console.log
+    card_container += 
+    `
+    <div class="mission-container column">
+      <button class="nav-link me-2 normal" style="width:100%;" onclick="createPopup('${name}','${enabled}','${img}','${link}','${tags}','${long_description}')">
+        <div class="card">
+          <h4><b>${name}</b></h4>
+          <p>${description}</p>
+        </div>
+      </button>
+    </div>
+    `;
+
+    return card_container;
+  }
+
+  function filterMissions(mission, search){
+    let name = mission['name'];
+    let description = mission['description']
+    var searchTest = (search.localeCompare(``) == 0 || name.localeCompare(search) == 0 || description.localeCompare(search) == 0);
+    
+    if (!searchTest){ 
+      let tags = mission['tags'];
+      for (let t of tags){
+        if (t.localeCompare(search) == 0){
+          searchTest = true;
+          break;
+        }
+      }
+    }
+    
+    return searchTest;
+  }
+
+  function on() {
+    document.getElementById("popup").style.display = "block";
+  }
+
+  function off() {
+    document.getElementById("popup").style.display = "none";
+  }
+
+  function createPopup(name, enabled, img, link, tags, long_description) {
+    let content = document.querySelector('#card-popup');
+    tags = tags.split(',')
+    
+    on();
+    let popup = 
+    `<div class="mission-popup card">
+    <button class="close" onclick="off()">x</button>
+
+    <div class="row">
+
+      <h1 style="margin-left: 25px;"><b>${name}</b></h1>
+      <div class="description">
+        <p>${long_description}</p>
+      </div>
+    `;
+
+    if (enabled == 'true') {
+      popup += `<a class="open normal" href="/cgi-bin/${link}">Fly Mission</a>`
+    } else {
+      popup += `<a class="disabled normal">Disabled</a>`
+    }
+
+    popup += `
+      <div class="tags">
+        <h2><b>Tags:</b></h2>
+        <ul>
+    `;
+    
+    for (let t of tags){
+      popup += `<li><h4>${t}</h4></li>`;
+    }
+
+    popup +=
+    `   
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+    `;
+
+    content.innerHTML = popup;
+  }
+  
+  createMissions();
+</script>

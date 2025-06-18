@@ -1,0 +1,4 @@
+This application allows a user to select points on a map and saves them on to the coords.csv on the server.
+For mapbox to work, you must plug in a valid token to the index.html file on line 44. 
+
+IF RUNNING WITH DOCKER, FORWARD TO PORT 8383!

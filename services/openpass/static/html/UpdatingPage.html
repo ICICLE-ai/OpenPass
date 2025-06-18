@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        #fileContent {
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            font-family: monospace; /* Use a monospaced font for better readability */
+        }
+        #stopButton {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <pre id="fileContent">Loading...</pre>
+    <button id="stopButton">Stop Updating</button>
+    <button onclick="goBack()">Go Back</button>
+    
+    <script>
+        const filename = 'http://10.43.195.204:30080/cgi-bin/callms.py?ms=i54292openpass&port=54292&path=/&state=user&code=None&page={{filename}}'; // The path to the text file
+        let intervalId;
+        let scrollID;
+        let scrolling = true;
+
+        function smoothScrollToBottom(scrollSpeed) {
+            const start = window.pageYOffset;
+            const end = document.body.scrollHeight;
+            const distance = end - start;
+            const scrollInterval = 10; // Interval in milliseconds
+            const pixelsPerInterval = (scrollSpeed / 1000) * scrollInterval; // Pixels to scroll per interval
+
+            function scroll() {
+                if (scrolling) {
+                    const currentY = window.pageYOffset;
+                    const newY = Math.min(currentY + pixelsPerInterval, end);
+                    window.scrollTo(0, newY);
+
+                    if (newY < end)  {
+                        setTimeout(scroll, scrollInterval);
+                    }
+                } 
+            }
+
+            scroll();
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function fetchFileContent() {
+            fetch(filename)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    if (html.includes('STOP')) {
+                        stopUpdating(); // Stop updating if the 'STOP' flag is found
+                    }
+                    else {
+                        const fileContentElement = document.getElementById('fileContent');
+                        fileContentElement.innerHTML = html; // Render the loaded text as HTML
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+        function startUpdating() {
+            // Fetch file content every 1 seconds
+            intervalId = setInterval(fetchFileContent, 1000);
+            // scrollID = setInterval(scrollToBottom, 1000);
+            scrollID = setInterval(() => {
+                smoothScrollToBottom(100);
+            }, 1000);
+            // Initial fetch
+            fetchFileContent();
+        }
+
+        function stopUpdating() {
+            clearInterval(intervalId);
+            clearInterval(scrollID);
+            document.getElementById('fileContent').innerHTML += '<br>== Updates stopped ==';
+
+            setTimeout(() => {
+                scrolling = false;
+            }, 2000)
+        }
+
+        // Set up the button to stop updates manually
+        document.getElementById('stopButton').addEventListener('click', stopUpdating);
+
+        // Start updating file content
+        startUpdating();
+    </script>
+</body>
+</html>
