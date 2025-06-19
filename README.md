@@ -1,15 +1,11 @@
 # Harmona
 
 <!-- Badges Section - FILL IN YOUR ACTUAL VALUES -->
-[![License](https://img.shields.io/badge/license-[LICENSE_TYPE]-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-[CURRENT_VERSION]-green.svg)](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/releases)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/[YOUR_USERNAME]/[REPO_NAME]/[WORKFLOW_FILE].yml?branch=main)](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/actions)
-[![Contributors](https://img.shields.io/github/contributors/[YOUR_USERNAME]/[REPO_NAME])](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/graphs/contributors)
-[![Issues](https://img.shields.io/github/issues/[YOUR_USERNAME]/[REPO_NAME])](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/[YOUR_USERNAME]/[REPO_NAME])](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/pulls)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-V2.0.0-green.svg)](https://github.com/[YOUR_USERNAME]/[REPO_NAME]/releases)
 
 <!-- FILL IN: Brief description of what OpenPass does -->
-[BRIEF_DESCRIPTION_OF_OPENPASS - e.g., "A secure, open-source authentication and authorization service for modern applications"]
+Harmona is an opensource platform for Edge to Cloud AI-Driven Applications for Field Studies
 
 ## Table of Contents
 
