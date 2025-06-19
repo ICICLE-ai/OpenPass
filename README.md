@@ -38,6 +38,8 @@ kubecmd get pods
 #Once all pods are in READY state run 
 bash /scripts/setup/startWebsite.sh
 ```
+Below is the dashboard images which will apprear after performing above task.
+![](/docs/images/dashboard.png)
 
 ## Contributing
 
