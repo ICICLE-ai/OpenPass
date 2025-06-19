@@ -31,6 +31,12 @@ Harmona is an opensource platform for Edge to Cloud AI-Driven Applications for F
 
 ```bash
 bash /scripts/setup/startMicroservice.sh
+
+# Check if pods are READ and in RUNNING state
+kubecmd get pods
+
+#Once all pods are in READY state run 
+bash /scripts/setup/startWebsite.sh
 ```
 
 ## Contributing
@@ -38,7 +44,6 @@ bash /scripts/setup/startMicroservice.sh
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ### Code Standards
-- Follow [CODING_STANDARD - e.g., "ESLint configuration"]
 - Write tests for new features
 - Update documentation for each implementation
 - Use conventional commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
@@ -57,10 +62,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-<!-- FILL IN: Credits and acknowledgments -->
-- [ACKNOWLEDGMENT_1 - e.g., "Thanks to [LIBRARY/PERSON] for [CONTRIBUTION]"]
-- [ACKNOWLEDGMENT_2]
-- [ACKNOWLEDGMENT_3]
+National Science Foundation (NSF) funded AI institute for Intelligent Cyberinfrastructure with Computational Learning in the Environment (ICICLE)- [OAC 2112606](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2112606)
 
 ---
 
