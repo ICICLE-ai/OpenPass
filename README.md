@@ -1,4 +1,4 @@
-# Harmona
+# Openpass
 
 <!-- Badges Section - FILL IN YOUR ACTUAL VALUES -->
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -25,12 +25,14 @@ Harmona is an opensource platform for Edge to Cloud AI-Driven Applications for F
 - Libraries using apt-get: bash, curl, python3, git, and docker.
 - Hardware: at least (1) 4 1.2 Ghz CPU cores, (2) 8 GB Ram, and (3) 256 GB storage.
 - Parrot Anafi Drones
+- K3s (Lightweight Kubernetes)
 
 
 ## Quick Start
 
 ```bash
-bash /scripts/setup/startMicroservice.sh
+# Download the install.sh file first
+curl -O https://raw.githubusercontent.com/ICICLE-ai/Harmona/main/install.sh
 
 # Check if pods are READ and in RUNNING state
 kubecmd get pods
