@@ -27,8 +27,8 @@ sudo rm -rf /etc/ceph \
 
 
 sleep 3
-bash /home/icicle/icicleEdge/adminTools/edgeTools/setupOfflineMode.sh reset
-bash /home/icicle/icicleEdge/adminTools/edgeTools/setupOfflineMode.sh init
+bash /home/icicle/icicleEdge/ea1openpass/setupOfflineMode.sh reset
+bash /home/icicle/icicleEdge/ea1openpass/setupOfflineMode.sh init
 
 # Do a fresh install
 echo "Installing K3s -- sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=\"server --flannel-iface=icl43\" sh -"
@@ -59,5 +59,6 @@ echo Deployed map utilities
 sleep 15
 ./bin/deployMicroservice.py -home `pwd` -devel -edge edgedevel 2222yolomissions 
 echo Deployed Yolo Mission in the background
+sleep 15
 ./bin/deployMicroservice.py -home `pwd` -devel -edge edgedevel 1212aimissions 
 echo Deployed AI Mission in the background

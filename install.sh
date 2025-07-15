@@ -103,6 +103,8 @@ echo 'alias kubecmd="sudo k3s kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml"' >
 
 # Now setup ASU
 cd /home/icicle/icicleEdge
+sudo echo "devel" > ctxt
+chmod +x ctxt
 sudo modprobe dummy
 sudo ip link del icl231
 sudo ip link add icl231 type dummy
