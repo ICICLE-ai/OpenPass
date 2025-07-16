@@ -120,19 +120,19 @@ pip3 install fastapi
 pip3 install py-lz4framed
 sudo apt-get -y install python3-softwarepilot
 
-CONFIG="$KEY_DEST/config"
 KEY_SRC="/home/icicle/icicleEdge/Harmona/creds"
 KEY_DEST="/home/icicle/.ssh"
 KEY_FILE="stage"
 
 mkdir -p "$KEY_DEST"
 cp "$KEY_SRC/$KEY_FILE" "$KEY_DEST/"
-chmod 600 "$KEY_DEST/$KEY_FILE"
+sudo chmod 600 "$KEY_DEST/$KEY_FILE"
+CONFIG="$KEY_DEST/config"
 
-touch "$CONFIG"
-grep -qF "$KEY_FILE" "$CONFIG" || {
-  echo -e "\nHost *\n    IdentityFile $KEY_DEST/$KEY_FILE" >> "$CONFIG"
-}
+if [ ! -f "$CONFIG" ]; then
+  sudo echo -e "Host *\n    IdentityFile $KEY_DEST/$KEY_FILE" > "$CONFIG"
+elif ! grep -q "IdentityFile $KEY_DEST/$KEY_FILE" "$CONFIG"; then
+  sudo echo -e "\nHost *\n    IdentityFile $KEY_DEST/$KEY_FILE" >> "$CONFIG"
+fi
 
-
-
+bash /home/icicle/icicleEdge/ea1openpass/startMicroservice.sh 
