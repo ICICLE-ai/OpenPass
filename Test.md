@@ -1,5 +1,5 @@
 
-# OpenPass
+# OppenPass
 
 The Decentralized Microservice Drone System for Digital Agriculture is a distributed, scalable platform designed to orchestrate autonomous drone operations for agricultural field missions. The system captures, processes, and analyzes aerial imagery and video data to support precision agriculture, crop monitoring, and field management operations.
 

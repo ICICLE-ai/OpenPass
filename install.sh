@@ -130,9 +130,9 @@ sudo chmod 600 "$KEY_DEST/$KEY_FILE"
 CONFIG="$KEY_DEST/config"
 
 if [ ! -f "$CONFIG" ]; then
-  sudo echo -e "Host *\n    IdentityFile $KEY_DEST/$KEY_FILE" > "$CONFIG"
+  sudo echo -e "IdentityFile $KEY_DEST/$KEY_FILE" > "$CONFIG"
 elif ! grep -q "IdentityFile $KEY_DEST/$KEY_FILE" "$CONFIG"; then
-  sudo echo -e "\nHost *\n    IdentityFile $KEY_DEST/$KEY_FILE" >> "$CONFIG"
+  sudo echo -e "IdentityFile $KEY_DEST/$KEY_FILE" >> "$CONFIG"
 fi
 
 bash /home/icicle/icicleEdge/ea1openpass/startMicroservice.sh 
