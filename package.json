@@ -1,6 +1,6 @@
 {
-  "homepage": "https://icicle-ai.github.io/Harmona",
-  "name": "harmona",
+  "homepage": "https://icicle-ai.github.io/OpenPass",
+  "name": "opnepass",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

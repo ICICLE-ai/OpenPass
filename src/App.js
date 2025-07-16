@@ -54,7 +54,7 @@ const App = () => {
               style={{width: '11vw', height: '100px',objectFit: 'contain'}} 
               alt="Logo of the ICICLE AI Institute"
             />
-            ICICLE Harmona
+            ICICLE OpenPass
           </a>
           
           <button 

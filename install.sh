@@ -92,13 +92,13 @@ git config --global user.email "icicle.edge.admin"
 git config --global init.defaultBranch "master" 
 
 # Copy files to correct places
-git clone https://github.com/ICICLE-ai/Harmona.git
+git clone https://github.com/ICICLE-ai/OpenPass.git
 mkdir bin
 mkdir ea1openpass
 mkdir helmbase
-cp --recursive Harmona/scripts/deployment/* ./bin/
-cp --recursive Harmona/scripts/setup/* ./ea1openpass/ 
-cp --recursive Harmona/helm-config/*  ./helmbase/ 
+cp --recursive OpenPass/scripts/deployment/* ./bin/
+cp --recursive OpenPass/scripts/setup/* ./ea1openpass/ 
+cp --recursive OpenPass/helm-config/*  ./helmbase/ 
 echo 'alias kubecmd="sudo k3s kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml"' >> ~/.bashrc 
 
 # Now setup ASU
@@ -120,7 +120,7 @@ pip3 install fastapi
 pip3 install py-lz4framed
 sudo apt-get -y install python3-softwarepilot
 
-KEY_SRC="/home/icicle/icicleEdge/Harmona/creds"
+KEY_SRC="/home/icicle/icicleEdge/OpenPass/creds"
 KEY_DEST="/home/icicle/.ssh"
 KEY_FILE="stage"
 
