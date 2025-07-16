@@ -1,6 +1,6 @@
 
 KEY_SRC="/home/icicle/icicleEdge/Harmona/creds"
-KEY_DEST="/home/icicle/.ssh/"
+KEY_DEST="/home/icicle/.ssh"
 KEY_FILE="stage"
 
 mkdir -p "$KEY_DEST"
