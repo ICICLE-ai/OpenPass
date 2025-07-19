@@ -3,10 +3,13 @@
 
 The Decentralized Microservice Drone System for Digital Agriculture is a distributed, scalable platform designed to orchestrate autonomous drone operations for agricultural field missions. The system captures, processes, and analyzes aerial imagery and video data to support precision agriculture, crop monitoring, and field management operations.
 
+### Tags
+- Software
+- Digital-Agriculture
+- Animal-Ecology
+
 ### License
-- MIT, BSD etc.
-- e.g  [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-- Add any other liceses that you want to include.
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   
 ## References
 - [K3s](https://docs.k3s.io/)
