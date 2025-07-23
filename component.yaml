@@ -1,0 +1,25 @@
+- id:
+  owner: Christopher Stewart
+  primaryThrust: core/Software
+  name: OpenPass
+  status:  ProductionRelease
+  website:
+  description: An application used to perform missions and collect data with the help of UAVs (Unmanned Ariel Vehicle)
+  componentVersion: V 1.0
+  targetIcicleRelease: 2025-08
+  licenseUrl: https://github.com/ICICLE-ai/OpenPass/blob/dev/LICENSE.md
+  publicAccess: true
+  sourceCodeUrl: https://github.com/ICICLE-ai/OpenPass/tree/dev
+  releaseNotesUrl: NA
+  citation:
+  containerImage:
+  codeReviewConducted:
+  testsWritten:
+  securityReviewConducted:
+  usageDocumentationAvailable: true
+  usageDocumentationUrl: https://github.com/ICICLE-ai/OpenPass/tree/dev
+  developerDocumentationAvailable: true
+  developerDocumentationUrl: https://github.com/ICICLE-ai/OpenPass/blob/dev/README.md
+  trainingTutorialsAvailable: true
+  trainingTutorialsUrl: Leave it, I'll add
+  usageMetricsCollected: false

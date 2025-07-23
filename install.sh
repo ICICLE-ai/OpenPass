@@ -125,14 +125,21 @@ KEY_DEST="/home/icicle/.ssh"
 KEY_FILE="stage"
 
 mkdir -p "$KEY_DEST"
-cp "$KEY_SRC/$KEY_FILE" "$KEY_DEST/"
-sudo chmod 600 "$KEY_DEST/$KEY_FILE"
+cp "$KEY_SRC/$KEY_FILE" "$KEY_DEST"
+chown icicle:icicle "$KEY_DEST/$KEY_FILE"
+chmod 600 "$KEY_DEST/$KEY_FILE"
 CONFIG="$KEY_DEST/config"
 
+SSH_CONFIG_BLOCK="Host 149.165.169.119
+  HostName 149.165.169.119
+  User stage
+  StrictHostKeyChecking no
+  IdentityFile $KEY_DEST/$KEY_FILE"
+
 if [ ! -f "$CONFIG" ]; then
-  sudo echo -e "IdentityFile $KEY_DEST/$KEY_FILE" > "$CONFIG"
-elif ! grep -q "IdentityFile $KEY_DEST/$KEY_FILE" "$CONFIG"; then
-  sudo echo -e "IdentityFile $KEY_DEST/$KEY_FILE" >> "$CONFIG"
+  echo "$SSH_CONFIG_BLOCK" > "$CONFIG"
+elif ! grep -q "Host 149.165.169.119" "$CONFIG"; then
+  echo "$SSH_CONFIG_BLOCK" >> "$CONFIG"
 fi
 
 bash /home/icicle/icicleEdge/ea1openpass/startMicroservice.sh 
