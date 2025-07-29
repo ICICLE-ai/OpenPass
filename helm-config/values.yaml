@@ -322,23 +322,23 @@ customLivenessProbe: {}
 customReadinessProbe: {}
 ## @param extraVolumes Array to add extra volumes (evaluated as a template)
 ##
-extraVolumes:
-  - name: video-device-0
-    hostPath:
-      path: /dev/video0
-      type: CharDevice
-  - name: icicle-local-git
-    hostPath:
-      path: /home/icicle/icicleLocalGit/devel/
-      type: Directory
+# extraVolumes:
+#   - name: video-device-0
+#     hostPath:
+#       path: /dev/video0
+#       type: CharDevice
+#   - name: icicle-local-git
+#     hostPath:
+#       path: /home/icicle/icicleLocalGit/devel/
+#       type: Directory
 ## @param extraVolumeMounts Array to add extra mounts (normally used with extraVolumes, evaluated as a template)
 ##
-extraVolumeMounts:
-  - mountPath: /dev/video0
-    name: video-device-0
-  - name: icicle-local-git 
-    mountPath: /mounted-repo
-    readOnly: true
+# extraVolumeMounts:
+#   - mountPath: /dev/video0
+#     name: video-device-0
+#   - name: icicle-local-git 
+#     mountPath: /mounted-repo
+#     readOnly: true
    
 
 ## @param extraEnvVars Array to add extra environment variables

@@ -42,7 +42,7 @@ EDGE_ID+="-edgedevel"
 sudo k3s kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml label node $NODE_NAME icicletype=edgedevel
 echo $EDGE_ID > ~/.ssh/icicletype
 
-
+sudo k3s crictl pull docker.io/profstewart/bitnami.apache.icicle:0.0.4
 
 cd /home/icicle/icicleEdge
 ./bin/deployMicroservice.py -home `pwd` -devel -edge edgedevel 30080website
