@@ -84,7 +84,8 @@ fi
 sudo mv ./resolv.conf /etc/resolv.conf  
 
 # Install helm and snap and set up Git
-sudo snap install helm --classic
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
 git config --global user.name "ICICLE Edge Admin" 
 
 git config --global user.email "icicle.edge.admin" 
