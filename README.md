@@ -46,11 +46,37 @@ The installation requires an Ubuntu-based edge device with the following configu
 
 ### Quick Guide
 ```bash
-# Download the install.sh file first
+# Clone the git repository
 git clone https://github.com/ICICLE-ai/OpenPass.git
+
+# Search for the cloned repository
+cd OpenPass
+
+# Run install.sh script inside the same directory
+bash install.sh
+
+# ⚠️Note: Don't worry if the application displays this error: error: Internal error occurred: unable to upgrade connection: container not found ("apache"). It will take some time and application will automatically processed with futher installation.
 
 # Check if pods are READ and in RUNNING state
 kubecmd get pods
+
+# One all the pods are RUNNING
+bash restartASU.sh
+
+#Once all pods are in READY state run 
+bash home/icicle/icicleEdge/ea1openpass/startWebsite.sh
+```
+
+```bash
+# If application already installed
+cd icicleEdge
+cd ea1openpass/restartMicroservices.sh
+
+# Check if pods are READ and in RUNNING state
+kubecmd get pods
+
+# One all the pods are RUNNING
+bash restartASU.sh
 
 #Once all pods are in READY state run 
 bash home/icicle/icicleEdge/ea1openpass/startWebsite.sh
