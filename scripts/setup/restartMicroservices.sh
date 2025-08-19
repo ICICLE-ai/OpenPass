@@ -1,7 +1,7 @@
 #!/bin/bash
 
-bash /home/icicle/icicleEdge/adminTools/edgeTools/setupOfflineMode.sh reset
-bash /home/icicle/icicleEdge/adminTools/edgeTools/setupOfflineMode.sh init
+bash /home/icicle/icicleEdge/ea1openpass/setupOfflineMode.sh reset
+bash /home/icicle/icicleEdge/ea1openpass/setupOfflineMode.sh init
 
 sleep 3
 echo "Restarting k3s"

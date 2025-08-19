@@ -82,6 +82,13 @@ bash restartASU.sh
 bash home/icicle/icicleEdge/ea1openpass/startWebsite.sh
 ```
 
+
+After running the startWebsite.sh you can see this dashborad:
+![](/docs/images/dashboard.png)
+
+Note: OpenPass offers several missions that can be used for data collection. These include missions utilizing GPS as well as movement-based (X,Y,Z axis) missions. OpenPass also provides an Orthomosaic Mission, which generates an orthomosaic of one acre of land. Each mission has its own description displayed on its respective button. Once you click on the mission button you can also have a look at the detailed description of the mission.  
+
+We are currently working on and testing missions that support YOLO libraries, enabling real-time object detection during mission execution on OpenPass.
 ## Overview
 
 This installation script automates the deployment of OpenPASS and its required dependencies on edge computing devices, specifically configured for laptop-based implementations. The system establishes a complete microservice environment with containerized applications, networking configuration, and essential development tools.
@@ -141,9 +148,3 @@ Common installation issues typically relate to user permissions, network connect
 This installation framework provides a robust foundation for deploying OpenPASS on edge computing devices, supporting scalable drone operations and agricultural data processing workflows.
 
 ---
-
-# Explanation
-
-### Architecture:
-![](docs/images/architecture.jpg)
-![](/docs/images/dashboard.png)
