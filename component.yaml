@@ -5,7 +5,7 @@
   status:  ProductionRelease
   website:
   description: An application used to perform missions and collect data with the help of UAVs (Unmanned Ariel Vehicle)
-  componentVersion: V 1.0
+  componentVersion: V 2.0.0
   targetIcicleRelease: 2025-08
   licenseUrl: https://github.com/ICICLE-ai/OpenPass/blob/dev/LICENSE.md
   publicAccess: true
