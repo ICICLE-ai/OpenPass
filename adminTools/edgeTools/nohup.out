@@ -1,0 +1,11 @@
+Gtk-Message: 10:42:39.184: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+
+(chrome:28650): Gtk-WARNING **: 10:42:39.225: GTK+ module /snap/chromium/2846/gnome-platform/usr/lib/gtk-2.0/modules/libcanberra-gtk-module.so cannot be loaded.
+GTK+ 2.x symbols detected. Using GTK+ 2.x and GTK+ 3 in the same process is not supported.
+Gtk-Message: 10:42:39.225: Failed to load module "canberra-gtk-module"
+
+(chrome:28650): Gtk-WARNING **: 10:42:39.226: GTK+ module /snap/chromium/2846/gnome-platform/usr/lib/gtk-2.0/modules/libcanberra-gtk-module.so cannot be loaded.
+GTK+ 2.x symbols detected. Using GTK+ 2.x and GTK+ 3 in the same process is not supported.
+Gtk-Message: 10:42:39.226: Failed to load module "canberra-gtk-module"
+[28650:28650:0725/104239.251444:ERROR:chrome_browser_cloud_management_controller.cc(161)] Cloud management controller initialization aborted as CBCM is not enabled. Please use the `--enable-chrome-browser-cloud-management` command line flag to enable it if you are not using the official Google Chrome build.
+[28650:28650:0725/104239.593273:ERROR:object_proxy.cc(576)] Failed to call method: org.freedesktop.ScreenSaver.GetActive: object_path= /org/freedesktop/ScreenSaver: org.freedesktop.DBus.Error.NotSupported: This method is not implemented
