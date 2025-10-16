@@ -166,13 +166,6 @@ preflight() {
 
 standard_install() {
 
-  # If icicleEdge already exists, remove it
-  if [ -d "/home/icicle/icicleEdge" ]; then
-      rm -rf /home/icicle/icicleEdge
-  else
-      echo "This appears to be a fresh install"
-  fi
-
   # Configure Ubuntu to avoid Hibernate and screenlock
   # These features can interfere with the operation of K3S
   sudo systemctl mask sleep.target
