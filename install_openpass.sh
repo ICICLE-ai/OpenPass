@@ -91,7 +91,7 @@ BANNER
 preflight() {
   step "Preflight checks"
 
-  KEY_SRC="/home/icicle/icicleEdge/OpenPass/creds"
+  KEY_SRC="/home/icicle/icicleEdge/creds"
   KEY_DEST="/home/icicle/.ssh"
   KEY_FILE="stage"
 
