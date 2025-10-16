@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set +x
 
 ################################################################################################
 # This script installs OpenPASS and required open-source software on an edge device (laptop).  
@@ -21,7 +21,7 @@ set -Eeuo pipefail
 ######################################################################
 # ----------------------------
 # Config / Flags
-# ----------------------------
+# ---------------------------- 
 EDGE=0      # set to 1 when --edge is passed
 VERBOSE=0
 WHOAMISERVER="stage"
@@ -284,15 +284,15 @@ edge_install() {
 
   # Function to clone a repository
   clone_repo() {
-      local repo_name="stage"
+      local repo_name="$1"
       local folder_name="${repo_name}"
       local repo_url="${GIT_SERVER}:${BASE_PATH}/${repo_name}.git"
-      
+
       echo "----------------------------------------"
       echo "Cloning repository: $repo_name"
       echo "From: $repo_url"
       echo "To: $DEST_DIR/$folder_name"
-      
+
       git clone "$repo_url" "$DEST_DIR/$folder_name"
       
       if [ $? -eq 0 ]; then
