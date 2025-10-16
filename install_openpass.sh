@@ -91,6 +91,29 @@ BANNER
 preflight() {
   step "Preflight checks"
 
+  KEY_SRC="/home/icicle/icicleEdge/OpenPass/creds"
+  KEY_DEST="/home/icicle/.ssh"
+  KEY_FILE="stage"
+
+  mkdir -p "$KEY_DEST"
+  cp "$KEY_SRC/$KEY_FILE" "$KEY_DEST"
+  chown icicle:icicle "$KEY_DEST/$KEY_FILE"
+  chmod 600 "$KEY_DEST/$KEY_FILE"
+  CONFIG="$KEY_DEST/config"
+
+  SSH_CONFIG_BLOCK="Host 149.165.169.119
+  HostName 149.165.169.119
+  User stage
+  StrictHostKeyChecking no
+  IdentityFile $KEY_DEST/$KEY_FILE"
+
+  if [ ! -f "$CONFIG" ]; then
+      echo "$SSH_CONFIG_BLOCK" > "$CONFIG"
+  elif ! grep -q "Host 149.165.169.119" "$CONFIG"; then
+      echo "" >> "$CONFIG"
+      echo "$SSH_CONFIG_BLOCK" >> "$CONFIG"
+  fi
+
   # Check correct path
   EXPECTED_PATH="/home/icicle/icicleEdge"
   if [ "$(pwd)" = "$EXPECTED_PATH" ]; then
@@ -220,29 +243,6 @@ standard_install() {
 
   # Set context file -- stage or devel
   echo $WHOAMISERVER > /home/icicle/icicleEdge/ctxt
-
-  KEY_SRC="/home/icicle/icicleEdge/OpenPass/creds"
-  KEY_DEST="/home/icicle/.ssh"
-  KEY_FILE="stage"
-
-  mkdir -p "$KEY_DEST"
-  cp "$KEY_SRC/$KEY_FILE" "$KEY_DEST"
-  chown icicle:icicle "$KEY_DEST/$KEY_FILE"
-  chmod 600 "$KEY_DEST/$KEY_FILE"
-  CONFIG="$KEY_DEST/config"
-
-  SSH_CONFIG_BLOCK="Host 149.165.169.119
-  HostName 149.165.169.119
-  User stage
-  StrictHostKeyChecking no
-  IdentityFile $KEY_DEST/$KEY_FILE"
-
-  if [ ! -f "$CONFIG" ]; then
-      echo "$SSH_CONFIG_BLOCK" > "$CONFIG"
-  elif ! grep -q "Host 149.165.169.119" "$CONFIG"; then
-      echo "" >> "$CONFIG"
-      echo "$SSH_CONFIG_BLOCK" >> "$CONFIG"
-  fi
 
 }
 

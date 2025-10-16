@@ -54,3 +54,11 @@ sleep 15
 ./bin/deployMicroservice.py -home `pwd` -devel -edge edgedevel 43210asu
 echo Deployed ASU service!  Waiting more seconds
 sleep 15
+./bin/deployEdgeMicroservice.py -home `pwd` -devel -edge edgedevel 8383boundarymap
+echo Deployed map utilities
+sleep 15
+./bin/deployEdgeMicroservice.py -home `pwd` -devel -edge edgedevel 2222yolomissions 
+echo Deployed Yolo Mission in the background
+sleep 15
+./bin/deployEdgeMicroservice.py -home `pwd` -devel -edge edgedevel 1212aimissions 
+echo Deployed AI Mission in the background
