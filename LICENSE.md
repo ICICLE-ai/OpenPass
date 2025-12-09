@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Imageomics Institute
+Copyright (c) 2025 Intelligent Cyberinfrastructure with Computational Learning in the Environment (ICICLE) (OAC 2112606)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
