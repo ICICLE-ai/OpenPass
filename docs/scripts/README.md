@@ -67,15 +67,14 @@ Tools for deploying and managing microservices on the ICICLE Edge Platform. Thes
 Tools for managing edge devices and their connectivity to the platform.
 
 - **setupOfflineMode.sh**: Configures the system for offline operation
-- **ASUinstall.sh**: Installation script for ASU (Application Service Utility)
-- **killASU.sh**: Terminates running ASU processes
-- **restartASU.sh**: Stops and restarts the ASU
-- **restartMicroservices-barebone.sh**: Restarts microservices in barebone mode
-- **restartMicroservices-edge2cloud.sh**: Restarts microservices with edge-to-cloud connectivity
-- **restartMicroservices-only.sh**: Only restarts the microservices without additional configurations
-- **restartMicroservices.sh**: Main script for restarting all microservices
-- **showServices.sh**: Displays currently running services
-- **startWebsite.sh**: Starts the web server for the platform's interface
+- **ASUinstall.sh**: Installation script for ASU (Application Service Utility) - located in `installation/ASU/`
+- **killASU.sh**: Terminates running ASU processes - located in `installation/ASU/`
+- **restartASU.sh**: Stops and restarts the ASU - located in `installation/ASU/`
+- **installMicroservice.sh**: Main script for installing/restarting microservices - located in `installation/`
+- **installEdge2Cloud.sh**: Installs microservices with edge-to-cloud connectivity - located in `installation/edge2cloudInstallation/`
+- **startEdgeMode.sh**: Starts microservices in edge mode - located in `installation/edgeInstallation/`
+- **showServices.sh**: Displays currently running services - located in `adminTools/edgeTools/`
+- **startWebsite.sh**: Starts the web server for the platform's interface - located at repository root
 
 ## Usage Guidelines
 
@@ -87,10 +86,16 @@ Tools for managing edge devices and their connectivity to the platform.
    python3 deployMicroservice.py -home `pwd` -devel -edge edgedevel <port_number><microservice_name> 
    ```
 
-2. For managing existing services, use the appropriate scripts in the `setup` directory:
+2. For managing existing services, use the appropriate scripts:
    ```bash
-   ./setup/showServices.sh
-   ./setup/restartMicroservices.sh
+   # Show running services
+   ./adminTools/edgeTools/showServices.sh
+
+   # Restart all microservices
+   ./installation/installMicroservice.sh -a
+
+   # Restart specific microservice
+   ./installation/installMicroservice.sh -m website
    ```
 
 ## Troubleshooting

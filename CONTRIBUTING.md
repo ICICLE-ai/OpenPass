@@ -84,7 +84,7 @@ git checkout -b my-new-branch
 1. To run **Harmona**:
 
 ```bash
-./scripts/setup/startMicroservice.sh
+./installation/installMicroservice.sh -a
 ```
 
 ## Documentation

@@ -62,28 +62,31 @@ bash install.sh
 # Check if pods are READ and in RUNNING state
 kubecmd get pods
 
-cd icicleEdge/ea1openpass/
+cd icicleEdge/installation/ASU/
 
 # One all the pods are RUNNING
 bash restartASU.sh
 
-#Once all pods are in READY state run 
-bash home/icicle/icicleEdge/ea1openpass/startWebsite.sh
+#Once all pods are in READY state run
+bash /home/icicle/icicleEdge/startWebsite.sh
 ```
 
 ```bash
 # If application already installed
-cd icicleEdge
-cd ea1openpass/restartMicroservices.sh
+cd icicleEdge/installation
+
+# Restart all microservices
+bash installMicroservice.sh -a
 
 # Check if pods are READ and in RUNNING state
 kubecmd get pods
 
 # One all the pods are RUNNING
+cd ASU
 bash restartASU.sh
 
-#Once all pods are in READY state run 
-bash home/icicle/icicleEdge/ea1openpass/startWebsite.sh
+#Once all pods are in READY state run
+bash /home/icicle/icicleEdge/startWebsite.sh
 ```
 
 

@@ -8,7 +8,7 @@ POD_NAME=`sudo kubectl get pods --no-headers | grep "$POD_PREFIX" | awk '{print 
 echo "Pod name identified as: $POD_NAME"
 
 echo "Getting all the asset paths...."
-LOCAL_ASSET_PATHS=("/home/icicle/icicleEdge/ea1openpass/assets/" "/home/icicle/icicleEdge/local.softwarepilotservice/static")
+LOCAL_ASSET_PATHS=("/home/icicle/icicleEdge/installation/assets/" "/home/icicle/icicleEdge/local.softwarepilotservice/static")
 POD_ASSET_PATHS=("$POD_NAME:/opt/bitnami/apache/htdocs/userfiles/" "$POD_NAME:/opt/bitnami/apache2/htdocs/userfiles/")
 
 for i in "${LOCAL_ASSET_PATHS[@]}"; do
@@ -24,7 +24,7 @@ read -s -p "Enter your OSC password: " PASSWORD
 echo "Username entered: $USERNAME"
 echo "Transferring pod files to local directory...."
 for i in "${POD_ASSET_PATHS[@]}"; do
-    sudo kubectl cp $i /home/icicle/icicleEdge/ea1openpass/assets/
+    sudo kubectl cp $i /home/icicle/icicleEdge/installation/assets/
 done
 echo "Initiating all files transfer...."
 for i in "${LOCAL_ASSET_PATHS[@]}"; do
