@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 bash /home/icicle/icicleEdge/adminTools/edgeTools/setupOfflineMode.sh reset
 bash /home/icicle/icicleEdge/adminTools/edgeTools/setupOfflineMode.sh init
@@ -7,7 +8,10 @@ sleep 3
 echo "Restarting k3s"
 sudo systemctl restart k3s
 
-
+echo "Waiting for k3s node to be ready..."
+until sudo k3s kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes &>/dev/null; do
+    sleep 5
+done
 
 NODE_NAME=`sudo k3s kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes| tail -n 1 | awk '{print $1}' `
 EDGE_ID=$NODE_NAME

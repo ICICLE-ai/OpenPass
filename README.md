@@ -24,133 +24,303 @@ The Decentralized Microservice Drone System for Digital Agriculture is a distrib
 # Tutorials
 
 ### Prerequisites
-- Ubuntu (22.01 or higher)
-- Libraries using apt-get: bash, curl, python3, git, and docker.
-- Hardware: at least (1) 4 1.2 Ghz CPU cores, (2) 8 GB Ram, and (3) 256 GB storage.
+- Ubuntu 22.04 or higher
+- User account named `icicle` with passwordless sudo access to root
+- Libraries: `bash`, `curl`, `python3`, `git`, `docker` (installed automatically by the script)
+- Hardware: minimum 4 CPU cores at 1.2 GHz, 8 GB RAM, 256 GB storage
 - Parrot Anafi Drones
-- K3s (Lightweight Kubernetes)
- 
- 
-The installation requires an Ubuntu-based edge device with the following configurations:
+- SSH private key with access to the OpenPASS Git server
 
-**User Configuration**: The system must have a user account named "icicle" with passwordless sudo privileges to root access. This user account serves as the primary operator for the OpenPASS installation and ongoing operations.
+The following must be in place **before** running the installer:
 
-**Directory Structure**: The installation expects the `/home/icicle` directory to exist and be accessible by the current user. Any existing `icicleEdge` directory will be removed and recreated during the installation process.
+**User**: Must be logged in as `icicle`. Confirm with `whoami`.
 
-**Network Access**: The device requires internet connectivity for package downloads, Git repository access, and DNS resolution configuration.
+**Path**: The repository must be cloned to exactly `/home/icicle/icicleEdge`. The installer validates this path at startup and exits if it does not match.
+
+**SSH Key**: Place your SSH private key at `config/stage` inside the cloned repo. This authenticates against the OpenPASS Git server to pull microservice source code during deployment.
+
+**Passwordless Sudo**: The `icicle` user must be able to run `sudo` without a password prompt. Verify with `sudo whoami` — it must return `root` instantly.
 
 
 ---
 
 # How-To Guides
 
-### Quick Guide
+### Online Mode (Standard Install)
+
+Use this when the device has internet access and can reach the OpenPASS Git server. Microservice source code is pulled from the remote server at deploy time.
+
 ```bash
-# Clone the git repository
-git clone https://github.com/ICICLE-ai/OpenPass.git
+# Clone the repository to the required path
+cd /home/icicle
+git clone https://github.com/ICICLE-ai/OpenPass.git icicleEdge
 
-# Search for the cloned repository
-cd OpenPass
+# Place your SSH key
+cp /path/to/your/ssh_key /home/icicle/icicleEdge/config/stage
+chmod 600 /home/icicle/icicleEdge/config/stage
 
-# Run install.sh script inside the same directory
+# Run the installer
+cd /home/icicle/icicleEdge
 bash install.sh
 
-# ⚠️Note: Don't worry if the application displays this error: error: Internal error occurred: unable to upgrade connection: container not found ("apache"). It will take some time and application will automatically processed with futher installation.
-
-# ⚠️Note: OpenPass directory is only for installation. Once installation is done the application must be controlled and runned from icicleEdge folder created inside the /home/icicle/icicleEdge/
-
-# Check if pods are READ and in RUNNING state
-kubecmd get pods
-
-cd icicleEdge/installation/ASU/
-
-# One all the pods are RUNNING
-bash restartASU.sh
-
-#Once all pods are in READY state run
-bash /home/icicle/icicleEdge/startWebsite.sh
+# Stream the install log in a separate terminal to follow progress
+tail -f install.log
 ```
+
+Once the installer finishes:
 
 ```bash
-# If application already installed
-cd icicleEdge/installation
-
-# Restart all microservices
-bash installMicroservice.sh -a
-
-# Check if pods are READ and in RUNNING state
+# Confirm all pods are Running and Ready (allow up to 3 minutes)
 kubecmd get pods
 
-# One all the pods are RUNNING
-cd ASU
+# Start the Aerial Scouting Units
+cd /home/icicle/icicleEdge/installation/ASU
 bash restartASU.sh
 
-#Once all pods are in READY state run
+# Launch the web dashboard
 bash /home/icicle/icicleEdge/startWebsite.sh
 ```
 
 
-After running the startWebsite.sh you can see this dashborad:
+### Offline / Edge Mode
+
+Use this when the device operates without internet after deployment. All microservice repositories are cloned locally during install and served from the device. Each pod receives a volume mount exposing the local repo mirror at `/mounted-repo` inside the container.
+
+```bash
+# Clone the repository to the required path
+cd /home/icicle
+git clone https://github.com/ICICLE-ai/OpenPass.git icicleEdge
+
+# Place your SSH key (still required for initial clone during install)
+cp /path/to/your/ssh_key /home/icicle/icicleEdge/config/stage
+chmod 600 /home/icicle/icicleEdge/config/stage
+
+# Run the installer with --edge flag
+# This clones all microservice repos to /home/icicle/icicleLocalGit/stage/
+# and configures offline networking and volume mounts
+cd /home/icicle/icicleEdge
+bash install.sh --edge
+
+# Stream the install log in a separate terminal to follow progress
+tail -f install.log
+```
+
+Once the installer finishes:
+
+```bash
+# Confirm all pods are Running and Ready (allow up to 3 minutes)
+kubecmd get pods
+
+# Start the Aerial Scouting Units
+cd /home/icicle/icicleEdge/installation/ASU
+bash restartASU.sh
+
+# Launch the web dashboard
+bash /home/icicle/icicleEdge/startWebsite.sh
+```
+
+
+### install.sh Flags
+
+| Flag | Description |
+|------|-------------|
+| *(none)* | Standard online install — pulls source from remote Git server |
+| `--edge` or `-e` | Offline/edge install — clones all repos locally, mounts them into pods |
+| `--verbose` or `-v` | Print detailed debug output during installation |
+| `devel` | Use the development Git environment (write access) instead of stage (read-only) |
+| `--help` or `-h` | Show usage information and exit |
+
+Examples:
+
+```bash
+bash install.sh                  # online, stage environment
+bash install.sh --edge           # offline, stage environment
+bash install.sh --edge -v        # offline, verbose output
+bash install.sh devel            # online, devel environment
+bash install.sh --edge devel     # offline, devel environment
+```
+
+
+### Restarting Microservices
+
+If the application is already installed and you need to redeploy:
+
+```bash
+cd /home/icicle/icicleEdge/installation
+
+# Online — pulls latest source from the remote Git server
+bash installMicroservice.sh -a
+
+# Offline/Edge — uses locally cloned repos and mounts volume into pods
+bash installMicroservice.sh -a -e
+
+# Reinstall a single microservice (e.g. openpass)
+bash installMicroservice.sh -m openpass
+
+# Reinstall without reinstalling K3s (faster if K3s is already healthy)
+bash installMicroservice.sh -a --no-k3s
+
+# List all available microservices and their ports
+bash installMicroservice.sh -l
+```
+
+After redeployment, check pod status and restart the web interface:
+
+```bash
+kubecmd get pods
+
+cd /home/icicle/icicleEdge/installation/ASU
+bash restartASU.sh
+
+bash /home/icicle/icicleEdge/startWebsite.sh
+```
+
+> ⚠️ **Note:** You may briefly see this error during startup — it is expected and resolves automatically as the container initialises: `Internal error occurred: unable to upgrade connection: container not found ("apache")`
+
+> ⚠️ **Note:** `/home/icicle/icicleEdge` is the live operational directory. The original cloned repo is only used for the initial install.
+
+
+After running `startWebsite.sh` you can see this dashboard:
 ![](/docs/images/dashboard.png)
 
-Note: OpenPass offers several missions that can be used for data collection. These include missions utilizing GPS as well as movement-based (X,Y,Z axis) missions. OpenPass also provides an Orthomosaic Mission, which generates an orthomosaic of one acre of land. Each mission has its own description displayed on its respective button. Once you click on the mission button you can also have a look at the detailed description of the mission.  
+Note: OpenPass offers several missions that can be used for data collection. These include missions utilizing GPS as well as movement-based (X,Y,Z axis) missions. OpenPass also provides an Orthomosaic Mission, which generates an orthomosaic of one acre of land. Each mission has its own description displayed on its respective button. Once you click on the mission button you can also have a look at the detailed description of the mission.
 
 We are currently working on and testing missions that support YOLO libraries, enabling real-time object detection during mission execution on OpenPass.
+
+
 ## Overview
 
 This installation script automates the deployment of OpenPASS and its required dependencies on edge computing devices, specifically configured for laptop-based implementations. The system establishes a complete microservice environment with containerized applications, networking configuration, and essential development tools.
 
 
-
 ## Installation Process
 
 ### System Configuration
-The installation begins by configuring the Ubuntu system to optimize performance for edge computing operations. The script disables system hibernation, sleep modes, and screen locking features that could interfere with continuous microservice operations. These modifications ensure uninterrupted service availability during extended operational periods.
+The installation begins by configuring Ubuntu to optimize performance for edge computing. The script disables system hibernation, sleep modes, and screen locking to ensure uninterrupted microservice availability during extended operations.
 
 ### Package Installation
-The script installs a comprehensive set of software packages required for the OpenPASS ecosystem. Core components include Docker for containerization, Python 3 for application development, Git for version control, and various networking utilities. Additional packages support database connectivity through MariaDB libraries and multimedia processing capabilities via SDL2 libraries.
+The script installs all required packages via `apt-get`: Docker for containerization, Python 3 for application runtime, Git for version control, Helm for Kubernetes deployments, and networking utilities. MariaDB and SDL2 libraries are included for database connectivity and multimedia processing.
 
 ### Network Configuration
-A critical component of the installation involves DNS resolution configuration. The script replaces the default systemd-resolved service with traditional resolv.conf configuration, pointing to Google's public DNS servers (8.8.4.4). This change ensures reliable network connectivity for containerized services and external API communications.
+Two virtual network interfaces are created using Linux dummy network drivers:
+
+- **`icl231`** — IP `192.168.231.231/24`. Hosts the local Software Pilot HTTP service on port `2311`.
+- **`icl43`** — IP `192.168.43.231/24`. Used by K3s as the Flannel CNI interface, routing all inter-pod traffic within the node. This ensures pods continue communicating even when external internet is unavailable.
+
+DNS resolution is reconfigured by replacing `systemd-resolved` with a static `resolv.conf` pointing to `8.8.4.4`, ensuring reliable name resolution for containerised services.
 
 ### Development Environment Setup
-The installation configures Git with default user credentials and repository settings, establishing a standardized development environment. Helm package manager installation through Snap provides Kubernetes application deployment capabilities essential for microservice orchestration.
+Git is configured with default credentials and branch settings. Helm is installed via Snap and used to deploy each of the six microservices as independent Kubernetes releases on the K3s cluster.
 
-### Repository and File Structure
-The script clones the OpenPASS repository from GitHub and establishes a structured directory hierarchy within the icicleEdge folder. This includes separate directories for binary executables, OpenPASS applications, and Helm configuration files. The installation creates convenient aliases for Kubernetes command-line operations.
+### SSH Key and Repository Access
+The SSH key at `config/stage` authenticates against the OpenPASS Git server. The active environment (`stage` or `devel`) is saved to `/home/icicle/icicleEdge/ctxt` and used by all subsequent deploy operations.
 
-### Network Interface Configuration
-A virtual network interface (icl231) is created using Linux dummy network drivers, configured with a specific MAC address and IP address (192.168.231.231/24). This interface provides isolated networking capabilities for testing and development scenarios without requiring physical network hardware.
+- **Online mode**: each microservice's source is cloned from the remote server at deploy time via `deployMicroservice.py`.
+- **Offline/edge mode**: all repositories are cloned once into `/home/icicle/icicleLocalGit/stage/` during install. The deploy script `deployEdgeMicroservice.py` copies from this local mirror instead of the remote server.
+
+### Local Volume Mount (Offline / Edge Mode Only)
+When deploying with `--edge`, each Kubernetes pod receives a `hostPath` volume mount that exposes the local repo mirror at `/mounted-repo` inside the container. This is applied automatically by `deployEdgeMicroservice.py`, which appends the volume configuration to each Helm release's `values.yaml` before install. The host path `/home/icicle/icicleLocalGit/stage` is created automatically if it does not exist.
 
 ### Python Environment
-The installation configures Python dependencies through pip3, installing specialized packages for software pilot operations, multimedia processing, and API development. These packages support the core functionality required for drone operations and data processing workflows.
+Python dependencies are installed via pip3: `softwarepilot`, `pysdl2`, `fastapi`, and `py-lz4framed`. These support drone communication, video processing, and the REST API layer used by the microservices.
 
 ### Security Configuration
-SSH key management is automated through the installation script, copying necessary authentication credentials from the OpenPASS repository to the user's SSH directory. Proper file permissions are set to ensure secure access to remote repositories and services.
+The SSH key at `config/stage` is used for Git server authentication. File permissions are set to `600` to ensure the key is accepted by SSH. All `sudo` operations require the `icicle` user to have passwordless access configured before installation begins.
+
 
 ## Post-Installation Operations
 
 ### Microservice Initialization
-The installation concludes by executing the microservice startup script, which initializes the core OpenPASS services and establishes the runtime environment. This automated startup ensures that all components are properly configured and ready for operational use.
+The installer deploys six core OpenPASS microservices via Helm on the K3s cluster:
+
+| Microservice | Port |
+|---|---|
+| `website` | 30080 |
+| `openpass` | 54292 |
+| `asu` | 43210 |
+| `boundarymap` | 8383 |
+| `yolomissions` | 2222 |
+| `aimissions` | 1212 |
+
+In edge mode, this automatically uses the offline deploy path with the local volume mount.
 
 ### Verification Steps
-Following successful installation, users should verify that Docker services are running, Kubernetes cluster is accessible through the kubecmd alias, and the virtual network interface is properly configured. The OpenPASS web interface should be accessible for mission planning and system monitoring.
+After installation, confirm the system is healthy:
+
+```bash
+# All pods should show READY 1/1 and STATUS Running
+kubecmd get pods
+
+# Local HTTP service should respond
+curl http://192.168.231.231:2311
+
+# Both dummy interfaces should be UP
+ip link show icl231
+ip link show icl43
+
+# In edge mode, confirm repos were cloned
+ls /home/icicle/icicleLocalGit/stage/
+```
+
 
 ## Repository Access
 
-### Default Configuration
-The installation uses the "stage" Git repository by default, providing read-only access to stable releases. This configuration ensures operational stability while preventing unauthorized modifications to core system components.
+### Default Configuration (Stage)
+The installation uses the `stage` Git environment by default, providing read-only access to stable releases. The active context is saved to `/home/icicle/icicleEdge/ctxt` and referenced by all deploy scripts.
 
-### Development Mode
-Alternative repository access can be configured by passing parameters to the installation script, enabling development repository access with write permissions for system administrators and developers.
+### Development Mode (Devel)
+Pass `devel` as an argument to switch to the development environment, which provides write access for administrators:
 
-## Support Considerations
+```bash
+bash install.sh devel            # online, devel environment
+bash install.sh --edge devel     # offline/edge, devel environment
+```
+
+
+## Troubleshooting
+
+### Pod stuck in `ContainerCreating` or `Pending`
+The startup probe copies files and runs `setup.sh` inside the container, which can take up to 3 minutes. If the pod stays stuck, inspect it:
+
+```bash
+kubecmd describe pod <pod-name>
+kubecmd logs <pod-name>
+```
+
+### `validate_path` error on install
+The repo must be cloned to exactly `/home/icicle/icicleEdge`. Re-clone with the correct target:
+
+```bash
+cd /home/icicle
+git clone https://github.com/ICICLE-ai/OpenPass.git icicleEdge
+```
+
+### SSH key error on install
+Confirm the key exists and has correct permissions:
+
+```bash
+ls -l /home/icicle/icicleEdge/config/stage
+chmod 600 /home/icicle/icicleEdge/config/stage
+```
+
+### Sudo prompts for password
+The `icicle` user must have passwordless sudo. Add to `/etc/sudoers` via `visudo`:
+
+```
+icicle ALL=(ALL) NOPASSWD: ALL
+```
+
+### Offline mode — pods cannot find repos
+Ensure `--edge` was passed during `install.sh`. Verify the local repos exist and are populated:
+
+```bash
+ls /home/icicle/icicleLocalGit/stage/
+```
+
+If the directory is empty or missing, the edge repos were not cloned. Re-run the installer with `--edge` or manually clone the repos using the SSH key at `config/stage`.
 
 ### System Maintenance
-Regular updates should be performed through the established Git workflow, ensuring that security patches and feature enhancements are properly integrated. The modular architecture allows for selective component updates without full system reinstallation.
-
-### Troubleshooting
-Common installation issues typically relate to user permissions, network connectivity, or conflicting software packages. The script includes error checking for critical prerequisites, providing clear diagnostic messages when installation requirements are not met.
+Updates should be applied through the Git workflow — pull the latest changes into `/home/icicle/icicleEdge` and redeploy affected microservices with `installMicroservice.sh`. The modular architecture allows individual microservices to be updated without a full reinstall.
 
 This installation framework provides a robust foundation for deploying OpenPASS on edge computing devices, supporting scalable drone operations and agricultural data processing workflows.
 

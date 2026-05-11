@@ -69,7 +69,7 @@ i = 1
 while (i < n):
     if sys.argv[i] == "-devel":
         develOp = True
-        msIpAdd = "149.165.169.119"
+        msIpAdd = "149.165.151.21"
     elif sys.argv[i] == "-edge":
         edgeDeployment = True
         i=i+1
@@ -90,7 +90,11 @@ if (nameCnt != 1 ):
     print ("Error.  The input line contained " + str(nameCnt) + " microservice names.  There should be exactly 1.  Did you mistype a parameter?")
     sys.exit(1)
 
-    
+if edgeDeployment and not re.search("^[a-zA-Z0-9_-]+$", edgeNme):
+    print("Error: edge name '" + edgeNme + "' contains invalid characters. Alphanumeric, dash, and underscore only.")
+    sys.exit(1)
+
+
 # 1. Check that the micorservice name follows correct naming protoco
 if re.search("^[0-9]+[a-zA-Z0-9]+$",msTitle):
     s = re.split("[a-zA-Z]",msTitle)
@@ -129,8 +133,8 @@ if (develOp == False):
     os.system('bash '+baseDir+'/bin/gitconfig.sh')
 
 
-print('cp -r /home/icicle/icicleLocalGit/devel/' + msTitle + ' ' + msTempD)
-os.system('cp -r /home/icicle/icicleLocalGit/devel/' + msTitle + ' ' + msTempD)
+print('cp -r /home/icicle/icicleLocalGit/' + ctxtNme + '/' + msTitle + ' ' + msTempD)
+os.system('cp -r /home/icicle/icicleLocalGit/' + ctxtNme + '/' + msTitle + ' ' + msTempD)
 doesExist = os.path.exists(msTempD)
 if (doesExist == False):
     print ("Unable to clone the repo.  Does it exist?")    
@@ -167,8 +171,19 @@ if edgeDeployment == True:
     print('sed -i \'s/icicletype: world/'+'icicletype: '+edgeNme+'/g\' '+ helmCre + '/values.yaml')
     os.system('sed -i \'s/icicletype: world/'+'icicletype: '+edgeNme+'/g\' '+ helmCre + '/values.yaml')
 
-
-
+#6e. Mount the local git repo for offline/edge mode
+localGitPath = '/home/icicle/icicleLocalGit/' + ctxtNme
+os.system('mkdir -p ' + localGitPath)
+with open(helmCre + '/values.yaml', 'a') as f:
+    f.write('\nextraVolumes:\n')
+    f.write('  - name: icicle-local-git\n')
+    f.write('    hostPath:\n')
+    f.write('      path: ' + localGitPath + '\n')
+    f.write('      type: DirectoryOrCreate\n')
+    f.write('\nextraVolumeMounts:\n')
+    f.write('  - name: icicle-local-git\n')
+    f.write('    mountPath: /mounted-repo\n')
+    f.write('    readOnly: true\n')
 
 # 7. If redeploy (helm uninstall first) ---- Actually it doesn't hurt to clear out first, just in case
 print('sudo helm --kubeconfig /etc/rancher/k3s/k3s.yaml delete ' + k3sMsID + ' ')

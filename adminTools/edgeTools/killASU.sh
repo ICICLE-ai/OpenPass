@@ -1,6 +1,6 @@
-#/bin/bash
+#!/bin/bash
 
 
-cd /home/icicleadmin/icicleEdge/local.softwarepilotservice
+cd /home/icicle/icicleEdge/local.softwarepilotservice
 killall -9 icicleasu
 

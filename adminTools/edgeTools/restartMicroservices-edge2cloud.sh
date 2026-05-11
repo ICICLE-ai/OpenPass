@@ -34,7 +34,11 @@ then
     bash /home/icicle/icicleEdge/adminTools/edgeTools/setupOfflineMode.sh init
 
     # Launch edge-2-cloud setup
-    bash /home/icicle/icicleEdge2Cloud/launchJetstream2Cluster.sh -c 2 -m 180
+    if [ -f "/home/icicle/icicleEdge2Cloud/launchJetstream2Cluster.sh" ]; then
+        bash /home/icicle/icicleEdge2Cloud/launchJetstream2Cluster.sh -c 2 -m 180
+    else
+        echo "Warning: icicleEdge2Cloud not found at /home/icicle/icicleEdge2Cloud — skipping cloud cluster setup"
+    fi
 fi
 
 

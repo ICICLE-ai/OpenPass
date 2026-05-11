@@ -57,6 +57,7 @@ readonly K3S_RESTART_DELAY=5
 # Runtime Flags
 INSTALL_ALL=0
 INSTALL_K3S=1
+USE_EDGE_DEPLOY=0
 MICROSERVICE_TO_INSTALL=""
 
 ################################################################################
@@ -74,6 +75,7 @@ Description:
 Options:
   -a, --all                Install all microservices
   -m, --microservice NAME  Install specific microservice
+  -e, --edge               Use edge deploy script instead of default
   --no-k3s                 Skip K3s installation (only install microservices)
   -l, --list              List all available microservices
   -h, --help              Show this help
@@ -183,6 +185,10 @@ install_k3s() {
         INSTALL_K3S_EXEC="server --flannel-iface=${FLANNEL_IFACE}" /bin/sh -
 
     sleep "$K3S_RESTART_DELAY"
+    log "Waiting for k3s node to be ready..."
+    until sudo k3s kubectl --kubeconfig "$KUBECTL_CONFIG" get nodes &>/dev/null; do
+        sleep 5
+    done
     log "K3s installed successfully"
 }
 
@@ -214,7 +220,7 @@ deploy_microservice() {
 
     cd "$ICICLE_EDGE"
 
-    if [[ "$service_type" == "edge" ]]; then
+    if [[ "$USE_EDGE_DEPLOY" -eq 1 ]]; then
         "$DEPLOY_EDGE_SCRIPT" -home "$(pwd)" -devel -edge "$NODE_TYPE" "$service_name"
     else
         "$DEPLOY_SCRIPT" -home "$(pwd)" -devel -edge "$NODE_TYPE" "$service_name"
@@ -291,6 +297,10 @@ parse_arguments() {
                 MICROSERVICE_TO_INSTALL="$2"
                 validate_microservice "$MICROSERVICE_TO_INSTALL"
                 shift 2
+                ;;
+            -e|--edge)
+                USE_EDGE_DEPLOY=1
+                shift
                 ;;
             --no-k3s)
                 INSTALL_K3S=0

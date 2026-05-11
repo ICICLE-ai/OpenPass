@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 killall -9 webRedirectorHttp
 rm -r icicle.redirect.devel
 mkdir icicle.redirect.devel

@@ -32,14 +32,14 @@ then
 	sudo modprobe dummy
 	sudo ip link del icl43
 	sudo ip link add icl43 type dummy
-	sudo ifconfig icl432 hw ether C8:D7:4A:4E:47:60
+	sudo ifconfig icl43 hw ether C8:D7:4A:4E:47:60
 	sudo ip addr add 192.168.43.231/24 brd + dev icl43 label icl43:0
 	sudo ip link set dev icl43 up
 	sudo ip route add default via 192.168.43.0 dev icl43 metric 8000000
 	
 	echo Offline Mode Setup Successfully
 	
-	cat icl43 > /home/icicle/icicleEdge/.localnetworkInstall
+	echo "installed" > /home/icicle/icicleEdge/.localnetworkInstall
 	
     fi
 elif [ "$parm" == "reset" ];

@@ -17,8 +17,10 @@ CTXT=`cat /home/icicle/icicleEdge/ctxt`
 
 rm -rf local.softwarepilotservice
 sudo pip install py-lz4framed
+GIT_SSH_COMMAND="ssh -i /home/icicle/icicleEdge/config/stage -o StrictHostKeyChecking=accept-new" \
 git clone $CTXT@149.165.169.119:/volume/$CTXT/softwarepilotservice.git local.softwarepilotservice
-sed -i 's/from OpenGL import GLX/\#OpenGL import GLX/g' $HOME/.local/lib/python3.10/site-packages/olympe/video/renderer.py
+OLYMPE_RENDERER="$HOME/.local/lib/python3.10/site-packages/olympe/video/renderer.py"
+[ -f "$OLYMPE_RENDERER" ] && sed -i 's/from OpenGL import GLX/\#OpenGL import GLX/g' "$OLYMPE_RENDERER"
 cd local.softwarepilotservice
 sudo cp /usr/bin/python3 /usr/bin/icicleasu
 nohup /usr/bin/icicleasu /home/icicle/icicleEdge/local.softwarepilotservice/onDevice/main.py >& localservice.logs & disown

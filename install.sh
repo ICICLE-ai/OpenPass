@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+trap 'echo "ERROR: install.sh failed at line $LINENO (exit code $?)" >&2' ERR
 
 ################################################################################
 # OpenPASS Installation Script
@@ -24,9 +25,10 @@ readonly ROOT_USER="root"
 readonly CONFIG_DIR="${EXPECTED_PATH}/config"
 readonly SSH_KEY_FILE="${CONFIG_DIR}/stage"
 
-# Git Server Configuration
-readonly GIT_SERVER_IP="149.165.169.119"
-readonly GIT_BASE_PATH="/volume"
+# Git Server Configuration (single source of truth: config/server_config.sh)
+source "${CONFIG_DIR}/server_config.sh"
+readonly GIT_SERVER_IP
+readonly GIT_BASE_PATH
 
 # Network Configuration
 readonly DUMMY_INTERFACE="icl231"
@@ -99,7 +101,9 @@ step() {
 }
 
 vlog() {
-    (( VERBOSE )) && printf '[DEBUG] %s\n' "$*"
+    if (( VERBOSE )); then
+        printf '[DEBUG] %s\n' "$*"
+    fi
 }
 
 display_banner() {
@@ -197,8 +201,8 @@ configure_power_management() {
     sudo systemctl mask sleep.target
     sudo systemctl mask hibernate.target
     sudo systemctl mask hybrid-sleep.target
-    gsettings set org.gnome.desktop.session idle-delay 0
-    gsettings set org.gnome.desktop.screensaver lock-enabled false
+    gsettings set org.gnome.desktop.session idle-delay 0 || true
+    gsettings set org.gnome.desktop.screensaver lock-enabled false || true
 
     log "Power management configured"
 }
@@ -212,7 +216,6 @@ install_system_packages() {
     sudo apt-get -y install docker wget net-tools curl
     sudo apt-get -y install python3-pip libmariadb3 libmariadb-dev
     sudo apt-get -y install libsdl2-2.0-0
-    sudo apt-get -y install python3-softwarepilot
 
     log "System packages installed"
 }
@@ -220,7 +223,7 @@ install_system_packages() {
 configure_dns() {
     step "Configuring DNS resolution"
 
-    sudo systemctl disable --now systemd-resolved.service
+    sudo systemctl disable --now systemd-resolved.service || true
     echo "nameserver ${DNS_SERVER}" > ./resolv.conf
 
     if [ -e "/etc/resolv.conf.original" ]; then
@@ -270,7 +273,7 @@ setup_dummy_interface() {
     sudo ip link del "$DUMMY_INTERFACE" 2>/dev/null || true
     sudo ip link add "$DUMMY_INTERFACE" type dummy
     sudo ifconfig "$DUMMY_INTERFACE" hw ether "$DUMMY_MAC"
-    sudo ip addr add "$DUMMY_IP" brd + dev "$DUMMY_INTERFACE" label "${DUMMY_INTERFACE}:0"
+    sudo ip addr add "$DUMMY_IP" brd + dev "$DUMMY_INTERFACE" label "${DUMMY_INTERFACE}:0" || true
     sudo ip link set dev "$DUMMY_INTERFACE" up
 
     log "Dummy IP: ${DUMMY_IP%/*}"
@@ -312,14 +315,19 @@ clone_softwarepilot_service() {
 configure_olympe() {
     step "Configuring Olympe"
 
-    sed -i 's/from OpenGL import GLX/\#OpenGL import GLX/g' "$OLYMPE_RENDERER"
-    vlog "Olympe renderer patched"
+    if [ -f "$OLYMPE_RENDERER" ]; then
+        sed -i 's/from OpenGL import GLX/\#OpenGL import GLX/g' "$OLYMPE_RENDERER"
+        vlog "Olympe renderer patched"
+    else
+        log "Olympe renderer not found at $OLYMPE_RENDERER — skipping patch"
+    fi
 }
 
 launch_local_services() {
     step "Launching local services"
 
     cd "$LOCAL_SERVICE_DIR"
+    sudo killall -9 icicleasu 2>/dev/null || true
     sudo cp "$PYTHON_BIN" "$ICICLE_ASU_BIN"
     $ICICLE_ASU_BIN onDevice/main.py >& localservice.logs & disown
 
@@ -372,10 +380,8 @@ clone_repository() {
     echo "From: $repo_url"
     echo "To: ${LOCAL_GIT_STAGE}/${folder_name}"
 
-    GIT_SSH_COMMAND="ssh -i $SSH_KEY_FILE -o StrictHostKeyChecking=accept-new" \
-    git clone "$repo_url" "${LOCAL_GIT_STAGE}/${folder_name}"
-
-    if [ $? -eq 0 ]; then
+    if GIT_SSH_COMMAND="ssh -i $SSH_KEY_FILE -o StrictHostKeyChecking=accept-new" \
+       git clone "$repo_url" "${LOCAL_GIT_STAGE}/${folder_name}"; then
         log "Successfully cloned $repo_name"
     else
         log "Failed to clone $repo_name"
@@ -410,8 +416,6 @@ setup_desktop_shortcuts() {
 
     ln -s "${OPENPASS_DIR}/installMicroservice.sh" \
         "${DESKTOP_DIR}/restartOpenPass.sh"
-    ln -s "${OPENPASS_DIR}/edge2cloudInstallation/installEdge2Cloud.sh" \
-        "${DESKTOP_DIR}/restartOpenPass_in_Edge2Cloud_mode.sh"
     ln -s "${ICICLE_HOME}/icicleEdge/adminTools/edgeTools/showServices.sh" \
         "${DESKTOP_DIR}/checkOpenPass_status.sh"
     ln -s "${ICICLE_HOME}/icicleEdge/startWebsite.sh" \
@@ -426,7 +430,11 @@ start_openpass() {
     step "Starting OpenPASS"
 
     cd "$OPENPASS_DIR"
-    bash "${OPENPASS_DIR}/installMicroservice.sh" -a
+    if (( EDGE )); then
+        bash "${OPENPASS_DIR}/installMicroservice.sh" -a -e
+    else
+        bash "${OPENPASS_DIR}/installMicroservice.sh" -a
+    fi
     log "OpenPASS started successfully"
 }
 
@@ -526,7 +534,7 @@ parse_arguments() {
         esac
     done
 
-    set -- "${positional[@]:-}"
+    [[ ${#positional[@]} -gt 0 ]] && set -- "${positional[@]}" || true
 }
 
 ################################################################################

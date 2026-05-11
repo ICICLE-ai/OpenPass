@@ -319,17 +319,17 @@ customLivenessProbe: {}
 customReadinessProbe: {}
 ## @param extraVolumes Array to add extra volumes (evaluated as a template)
 ##
-extraVolumes:
-  - name: icicle-local-git
-    hostPath:
-      path: /home/icicle/icicleLocalGit/devel/
-      type: Directory
+# extraVolumes:
+#   - name: icicle-local-git
+#     hostPath:
+#       path: /home/icicle/icicleLocalGit/devel/
+#       type: Directory
 ## @param extraVolumeMounts Array to add extra mounts (normally used with extraVolumes, evaluated as a template)
 ##
-extraVolumeMounts:
-  - name: icicle-local-git 
-    mountPath: /mounted-repo
-    readOnly: true
+# extraVolumeMounts:
+#   - name: icicle-local-git 
+#     mountPath: /mounted-repo
+#     readOnly: true
    
 
 ## @param extraEnvVars Array to add extra environment variables

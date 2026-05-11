@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting with tranfering data...."
+echo "Starting with transferring data...."
 
 echo "Identifying the pods name..."
 POD_PREFIX="i54292openpass"

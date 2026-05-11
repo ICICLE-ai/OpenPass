@@ -69,7 +69,7 @@ i = 1
 while (i < n):
     if sys.argv[i] == "-devel":
         develOp = True
-        msIpAdd = "149.165.169.119"
+        msIpAdd = "149.165.151.21"
     elif sys.argv[i] == "-edge":
         edgeDeployment = True
         i=i+1
@@ -90,7 +90,11 @@ if (nameCnt != 1 ):
     print ("Error.  The input line contained " + str(nameCnt) + " microservice names.  There should be exactly 1.  Did you mistype a parameter?")
     sys.exit(1)
 
-    
+if edgeDeployment and not re.search("^[a-zA-Z0-9_-]+$", edgeNme):
+    print("Error: edge name '" + edgeNme + "' contains invalid characters. Alphanumeric, dash, and underscore only.")
+    sys.exit(1)
+
+
 # 1. Check that the micorservice name follows correct naming protoco
 if re.search("^[0-9]+[a-zA-Z0-9]+$",msTitle):
     s = re.split("[a-zA-Z]",msTitle)

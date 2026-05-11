@@ -1,3 +1,4 @@
+#!/bin/bash
 found=0
 while [ $found == 0 ]
 do
